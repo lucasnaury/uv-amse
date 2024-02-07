@@ -2,53 +2,53 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-import 'book.dart';
+import 'media.dart';
 
 final libraryInstance = Library()
-  ..addBook(
+  ..addMedia(
       title: 'Left Hand of Darkness',
       authorName: 'Ursula K. Le Guin',
       isPopular: true,
       isNew: true)
-  ..addBook(
+  ..addMedia(
       title: 'Too Like the Lightning',
       authorName: 'Ada Palmer',
       isPopular: false,
       isNew: true)
-  ..addBook(
+  ..addMedia(
       title: 'Kindred',
       authorName: 'Octavia E. Butler',
       isPopular: true,
       isNew: false)
-  ..addBook(
+  ..addMedia(
       title: 'The Lathe of Heaven',
       authorName: 'Ursula K. Le Guin',
       isPopular: false,
       isNew: false);
 
 class Library {
-  final List<Book> allBooks = [];
+  final List<Media> allMedias = [];
 
-  void addBook({
+  void addMedia({
     required String title,
     required String authorName,
     required bool isPopular,
     required bool isNew,
   }) {
-    var book = Book(allBooks.length, title, isPopular, isNew, authorName);
+    var media = Media(allMedias.length, title, isPopular, isNew, authorName);
 
-    allBooks.add(book);
+    allMedias.add(media);
   }
 
-  Book getBook(String id) {
-    return allBooks[int.parse(id)];
+  Media getMedia(String id) {
+    return allMedias[int.parse(id)];
   }
 
-  List<Book> get popularBooks => [
-        ...allBooks.where((book) => book.isPopular),
+  List<Media> get popularMedias => [
+        ...allMedias.where((media) => media.isPopular),
       ];
 
-  List<Book> get newBooks => [
-        ...allBooks.where((book) => book.isNew),
+  List<Media> get newBooks => [
+        ...allMedias.where((media) => media.isNew),
       ];
 }

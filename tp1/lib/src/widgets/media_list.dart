@@ -6,27 +6,27 @@ import 'package:flutter/material.dart';
 
 import '../data.dart';
 
-class BookList extends StatelessWidget {
-  final List<Book> books;
-  final ValueChanged<Book>? onTap;
+class MediaList extends StatelessWidget {
+  final List<Media> medias;
+  final ValueChanged<Media>? onTap;
 
-  const BookList({
-    required this.books,
+  const MediaList({
+    required this.medias,
     this.onTap,
     super.key,
   });
 
   @override
   Widget build(BuildContext context) => ListView.builder(
-        itemCount: books.length,
+        itemCount: medias.length,
         itemBuilder: (context, index) => ListTile(
           title: Text(
-            books[index].title,
+            medias[index].title,
           ),
           subtitle: Text(
-            books[index].author456,
+            medias[index].author,
           ),
-          onTap: onTap != null ? () => onTap!(books[index]) : null,
+          onTap: onTap != null ? () => onTap!(medias[index]) : null,
         ),
       );
 }

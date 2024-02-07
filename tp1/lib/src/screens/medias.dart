@@ -4,12 +4,12 @@
 
 import 'package:flutter/material.dart';
 
-class BooksScreen extends StatefulWidget {
+class MediasScreen extends StatefulWidget {
   final Widget child;
   final ValueChanged<int> onTap;
   final int selectedIndex;
 
-  const BooksScreen({
+  const MediasScreen({
     required this.child,
     required this.onTap,
     required this.selectedIndex,
@@ -17,10 +17,10 @@ class BooksScreen extends StatefulWidget {
   });
 
   @override
-  State<BooksScreen> createState() => _BooksScreenState();
+  State<MediasScreen> createState() => _MediasScreenState();
 }
 
-class _BooksScreenState extends State<BooksScreen>
+class _MediasScreenState extends State<MediasScreen>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
 
