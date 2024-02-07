@@ -62,26 +62,21 @@ class MyHomePage extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                ElevatedButton(
+                ElevatedButton.icon(
                   onPressed: () {
                     appState.toggleFavorite();
                   },
-                  child: Row(
-                    children: [
-                      Icon(
-                        favorites.contains(randomPair)
-                            ? Icons.favorite
-                            : Icons.favorite_outline,
-                        size: 18.0,
-                        semanticLabel: favorites.contains(randomPair)
-                            ? 'Remove favorite'
-                            : 'Add favorite',
-                      ),
-                      SizedBox(width: 10),
-                      Text(
-                        favorites.contains(randomPair) ? 'Unlike' : 'Like',
-                      ),
-                    ],
+                  icon: Icon(
+                    favorites.contains(randomPair)
+                        ? Icons.favorite
+                        : Icons.favorite_outline,
+                    size: 18.0,
+                    semanticLabel: favorites.contains(randomPair)
+                        ? 'Remove favorite'
+                        : 'Add favorite',
+                  ),
+                  label: Text(
+                    favorites.contains(randomPair) ? 'Unlike' : 'Like',
                   ),
                 ),
                 SizedBox(width: 15),
