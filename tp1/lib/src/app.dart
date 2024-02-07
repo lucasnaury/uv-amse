@@ -2,6 +2,7 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
+import 'package:bookstore/src/screens/liked.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -57,7 +58,6 @@ class _MediastoreState extends State<Mediastore> {
                             0 => '/medias/films',
                             1 => '/medias/series',
                             2 => '/medias/livres',
-                            3 => '/liked',
                             _ => '/medias/films',
                           });
                         },
@@ -65,7 +65,6 @@ class _MediastoreState extends State<Mediastore> {
                           var p when p.startsWith('/medias/films') => 0,
                           var p when p.startsWith('/medias/series') => 1,
                           var p when p.startsWith('/medias/livres') => 2,
-                          var p when p.startsWith('/liked') => 3,
                           _ => 0,
                         },
                         child: child,
@@ -173,6 +172,22 @@ class _MediastoreState extends State<Mediastore> {
                       ),
                     ],
                   ),
+                ],
+              ),
+              ShellRoute(
+                pageBuilder: (context, state, child) {
+                  return FadeTransitionPage<dynamic>(
+                    key: state.pageKey,
+                    // Use a builder to get the correct BuildContext
+                    // TODO (johnpryan): remove when https://github.com/flutter/flutter/issues/108177 lands
+                    child: Builder(builder: (context) {
+                      return LikedScreen(
+                        child: child,
+                      );
+                    }),
+                  );
+                },
+                routes: [
                   GoRoute(
                     path: '/liked',
                     pageBuilder: (context, state) {
@@ -183,10 +198,10 @@ class _MediastoreState extends State<Mediastore> {
                         child: Builder(
                           builder: (context) {
                             return MediaList(
-                              medias: libraryInstance.allMedias,
+                              medias: libraryInstance.liked,
                               onTap: (media) {
                                 GoRouter.of(context)
-                                    .push('/medias/liked/info/${media.id}');
+                                    .push('/liked/info/${media.id}');
                               },
                             );
                           },

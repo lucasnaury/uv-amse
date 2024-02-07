@@ -6,13 +6,9 @@ import 'package:flutter/material.dart';
 
 class LikedScreen extends StatefulWidget {
   final Widget child;
-  final ValueChanged<int> onTap;
-  final int selectedIndex;
 
   const LikedScreen({
     required this.child,
-    required this.onTap,
-    required this.selectedIndex,
     super.key,
   });
 
@@ -22,8 +18,6 @@ class LikedScreen extends StatefulWidget {
 
 class _LikedScreenState extends State<LikedScreen>
     with SingleTickerProviderStateMixin {
-  late TabController _tabController;
-
   @override
   void initState() {
     super.initState();
@@ -42,9 +36,5 @@ class _LikedScreenState extends State<LikedScreen>
       ),
       body: widget.child,
     );
-  }
-
-  void _handleTabIndexChanged() {
-    widget.onTap(_tabController.index);
   }
 }
