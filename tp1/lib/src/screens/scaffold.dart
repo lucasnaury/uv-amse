@@ -35,10 +35,6 @@ class BookstoreScaffold extends StatelessWidget {
             icon: Icons.book,
           ),
           AdaptiveScaffoldDestination(
-            title: 'Authors',
-            icon: Icons.person,
-          ),
-          AdaptiveScaffoldDestination(
             title: 'Settings',
             icon: Icons.settings,
           ),

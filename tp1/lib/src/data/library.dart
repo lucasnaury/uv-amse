@@ -2,7 +2,6 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-import 'author.dart';
 import 'book.dart';
 
 final libraryInstance = Library()
@@ -29,7 +28,6 @@ final libraryInstance = Library()
 
 class Library {
   final List<Book> allBooks = [];
-  final List<Author> allAuthors = [];
 
   void addBook({
     required String title,
@@ -37,17 +35,8 @@ class Library {
     required bool isPopular,
     required bool isNew,
   }) {
-    var author = allAuthors.firstWhere(
-      (author) => author.name == authorName,
-      orElse: () {
-        final value = Author(allAuthors.length, authorName);
-        allAuthors.add(value);
-        return value;
-      },
-    );
-    var book = Book(allBooks.length, title, isPopular, isNew, author);
+    var book = Book(allBooks.length, title, isPopular, isNew, authorName);
 
-    author.books.add(book);
     allBooks.add(book);
   }
 

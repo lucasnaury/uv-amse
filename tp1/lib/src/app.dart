@@ -6,8 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import 'data.dart';
-import 'screens/author_details.dart';
-import 'screens/authors.dart';
 import 'screens/book_details.dart';
 import 'screens/books.dart';
 import 'screens/scaffold.dart';
@@ -174,44 +172,6 @@ class _BookstoreState extends State<Bookstore> {
                       ),
                     ],
                   ),
-                ],
-              ),
-              GoRoute(
-                path: '/authors',
-                pageBuilder: (context, state) {
-                  return FadeTransitionPage<dynamic>(
-                    key: state.pageKey,
-                    child: Builder(builder: (context) {
-                      return AuthorsScreen(
-                        onTap: (author) {
-                          GoRouter.of(context)
-                              .go('/authors/author/${author.id}');
-                        },
-                      );
-                    }),
-                  );
-                },
-                routes: [
-                  GoRoute(
-                    path: 'author/:authorId',
-                    builder: (context, state) {
-                      final author = libraryInstance.allAuthors.firstWhere(
-                          (author) =>
-                              author.id ==
-                              int.parse(state.pathParameters['authorId']!));
-                      // Use a builder to get the correct BuildContext
-                      // TODO (johnpryan): remove when https://github.com/flutter/flutter/issues/108177 lands
-                      return Builder(builder: (context) {
-                        return AuthorDetailsScreen(
-                          author: author,
-                          onBookTapped: (book) {
-                            GoRouter.of(context)
-                                .go('/books/all/book/${book.id}');
-                          },
-                        );
-                      });
-                    },
-                  )
                 ],
               ),
               GoRoute(

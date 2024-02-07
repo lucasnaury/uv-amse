@@ -24,7 +24,7 @@ class BookList extends StatelessWidget {
             books[index].title,
           ),
           subtitle: Text(
-            books[index].author.name,
+            books[index].author456,
           ),
           onTap: onTap != null ? () => onTap!(books[index]) : null,
         ),
