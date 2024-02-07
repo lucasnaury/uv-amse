@@ -42,21 +42,21 @@ class _MediasScreenState extends State<MediasScreen>
     _tabController.index = widget.selectedIndex;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Books'),
+        title: const Text('Medias'),
         bottom: TabBar(
           controller: _tabController,
           tabs: const [
             Tab(
-              text: 'Popular',
-              icon: Icon(Icons.people),
+              text: 'Films',
+              icon: Icon(Icons.camera_roll),
             ),
             Tab(
-              text: 'New',
-              icon: Icon(Icons.new_releases),
+              text: 'Séries',
+              icon: Icon(Icons.live_tv),
             ),
             Tab(
-              text: 'All',
-              icon: Icon(Icons.list),
+              text: 'Livres',
+              icon: Icon(Icons.menu_book),
             ),
           ],
         ),
