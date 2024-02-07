@@ -29,7 +29,7 @@ class _MediastoreState extends State<Mediastore> {
     return MaterialApp.router(
       routerConfig: GoRouter(
         debugLogDiagnostics: true,
-        initialLocation: '/books/popular',
+        initialLocation: '/medias/films',
         routes: [
           ShellRoute(
             navigatorKey: appShellNavigatorKey,
@@ -54,17 +54,17 @@ class _MediastoreState extends State<Mediastore> {
                       return MediasScreen(
                         onTap: (idx) {
                           GoRouter.of(context).go(switch (idx) {
-                            0 => '/books/popular',
-                            1 => '/books/new',
-                            2 => '/books/all',
+                            0 => '/medias/films',
+                            1 => '/medias/series',
+                            2 => '/medias/livres',
                             3 => '/liked',
-                            _ => '/books/popular',
+                            _ => '/medias/films',
                           });
                         },
                         selectedIndex: switch (state.uri.path) {
-                          var p when p.startsWith('/books/popular') => 0,
-                          var p when p.startsWith('/books/new') => 1,
-                          var p when p.startsWith('/books/all') => 2,
+                          var p when p.startsWith('/medias/films') => 0,
+                          var p when p.startsWith('/medias/series') => 1,
+                          var p when p.startsWith('/medias/livres') => 2,
                           var p when p.startsWith('/liked') => 3,
                           _ => 0,
                         },
@@ -75,7 +75,7 @@ class _MediastoreState extends State<Mediastore> {
                 },
                 routes: [
                   GoRoute(
-                    path: '/books/popular',
+                    path: '/medias/films',
                     pageBuilder: (context, state) {
                       return FadeTransitionPage<dynamic>(
                         // Use a builder to get the correct BuildContext
@@ -87,7 +87,7 @@ class _MediastoreState extends State<Mediastore> {
                               medias: libraryInstance.popularMedias,
                               onTap: (media) {
                                 GoRouter.of(context)
-                                    .go('/books/popular/book/${media.id}');
+                                    .go('/medias/films/book/${media.id}');
                               },
                             );
                           },
@@ -108,7 +108,7 @@ class _MediastoreState extends State<Mediastore> {
                     ],
                   ),
                   GoRoute(
-                    path: '/books/new',
+                    path: '/medias/series',
                     pageBuilder: (context, state) {
                       return FadeTransitionPage<dynamic>(
                         key: state.pageKey,
@@ -120,7 +120,7 @@ class _MediastoreState extends State<Mediastore> {
                               medias: libraryInstance.newBooks,
                               onTap: (media) {
                                 GoRouter.of(context)
-                                    .go('/books/new/book/${media.id}');
+                                    .go('/medias/series/book/${media.id}');
                               },
                             );
                           },
@@ -141,7 +141,7 @@ class _MediastoreState extends State<Mediastore> {
                     ],
                   ),
                   GoRoute(
-                    path: '/books/all',
+                    path: '/medias/livres',
                     pageBuilder: (context, state) {
                       return FadeTransitionPage<dynamic>(
                         key: state.pageKey,
@@ -153,7 +153,7 @@ class _MediastoreState extends State<Mediastore> {
                               medias: libraryInstance.allMedias,
                               onTap: (media) {
                                 GoRouter.of(context)
-                                    .go('/books/all/book/${media.id}');
+                                    .go('/medias/livres/book/${media.id}');
                               },
                             );
                           },

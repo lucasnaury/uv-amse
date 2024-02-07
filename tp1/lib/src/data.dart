@@ -3,4 +3,4 @@
 // BSD-style license that can be found in the LICENSE file.
 
 export 'data/media.dart';
-export 'data/library.dart';
+export 'data/medias.dart';

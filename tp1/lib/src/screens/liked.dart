@@ -27,19 +27,15 @@ class _LikedScreenState extends State<LikedScreen>
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 3, vsync: this)
-      ..addListener(_handleTabIndexChanged);
   }
 
   @override
   void dispose() {
-    _tabController.removeListener(_handleTabIndexChanged);
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    _tabController.index = widget.selectedIndex;
     return Scaffold(
       appBar: AppBar(
         title: const Text('Liked'),
