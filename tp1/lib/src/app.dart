@@ -9,7 +9,6 @@ import 'data.dart';
 import 'screens/book_details.dart';
 import 'screens/books.dart';
 import 'screens/scaffold.dart';
-import 'screens/settings.dart';
 import 'widgets/book_list.dart';
 import 'widgets/fade_transition_page.dart';
 
@@ -38,7 +37,6 @@ class _BookstoreState extends State<Bookstore> {
                 selectedIndex: switch (state.uri.path) {
                   var p when p.startsWith('/books') => 0,
                   var p when p.startsWith('/authors') => 1,
-                  var p when p.startsWith('/settings') => 2,
                   _ => 0,
                 },
                 child: child,
@@ -173,15 +171,6 @@ class _BookstoreState extends State<Bookstore> {
                     ],
                   ),
                 ],
-              ),
-              GoRoute(
-                path: '/settings',
-                pageBuilder: (context, state) {
-                  return FadeTransitionPage<dynamic>(
-                    key: state.pageKey,
-                    child: const SettingsScreen(),
-                  );
-                },
               ),
             ],
           ),
