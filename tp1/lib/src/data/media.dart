@@ -2,12 +2,12 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-class Book {
+class Media {
   final int id;
   final String title;
-  final String author456;
+  final String author;
   final bool isPopular;
   final bool isNew;
 
-  Book(this.id, this.title, this.isPopular, this.isNew, this.author456);
+  Media(this.id, this.title, this.isPopular, this.isNew, this.author);
 }

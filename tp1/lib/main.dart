@@ -24,7 +24,7 @@ void main() {
   // setPathUrlStrategy();
 
   setupWindow();
-  runApp(const Bookstore());
+  runApp(const Mediastore());
 }
 
 const double windowWidth = 480;

@@ -6,23 +6,24 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import 'data.dart';
-import 'screens/book_details.dart';
-import 'screens/books.dart';
+import 'screens/media_details.dart';
+import 'screens/medias.dart';
 import 'screens/scaffold.dart';
-import 'widgets/book_list.dart';
+import 'widgets/media_list.dart';
 import 'widgets/fade_transition_page.dart';
 
 final appShellNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'app shell');
-final booksNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'books shell');
+final mediasNavigatorKey =
+    GlobalKey<NavigatorState>(debugLabel: 'medias shell');
 
-class Bookstore extends StatefulWidget {
-  const Bookstore({super.key});
+class Mediastore extends StatefulWidget {
+  const Mediastore({super.key});
 
   @override
-  State<Bookstore> createState() => _BookstoreState();
+  State<Mediastore> createState() => _MediastoreState();
 }
 
-class _BookstoreState extends State<Bookstore> {
+class _MediastoreState extends State<Mediastore> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
@@ -33,7 +34,7 @@ class _BookstoreState extends State<Bookstore> {
           ShellRoute(
             navigatorKey: appShellNavigatorKey,
             builder: (context, state, child) {
-              return BookstoreScaffold(
+              return MediastoreScaffold(
                 selectedIndex: switch (state.uri.path) {
                   var p when p.startsWith('/books') => 0,
                   var p when p.startsWith('/authors') => 1,
@@ -50,7 +51,7 @@ class _BookstoreState extends State<Bookstore> {
                     // Use a builder to get the correct BuildContext
                     // TODO (johnpryan): remove when https://github.com/flutter/flutter/issues/108177 lands
                     child: Builder(builder: (context) {
-                      return BooksScreen(
+                      return MediasScreen(
                         onTap: (idx) {
                           GoRouter.of(context).go(switch (idx) {
                             0 => '/books/popular',
@@ -80,11 +81,11 @@ class _BookstoreState extends State<Bookstore> {
                         key: state.pageKey,
                         child: Builder(
                           builder: (context) {
-                            return BookList(
-                              books: libraryInstance.popularBooks,
-                              onTap: (book) {
+                            return MediaList(
+                              medias: libraryInstance.popularMedias,
+                              onTap: (media) {
                                 GoRouter.of(context)
-                                    .go('/books/popular/book/${book.id}');
+                                    .go('/books/popular/book/${media.id}');
                               },
                             );
                           },
@@ -93,12 +94,12 @@ class _BookstoreState extends State<Bookstore> {
                     },
                     routes: [
                       GoRoute(
-                        path: 'book/:bookId',
+                        path: 'book/:mediaId',
                         parentNavigatorKey: appShellNavigatorKey,
                         builder: (context, state) {
-                          return BookDetailsScreen(
-                            book: libraryInstance
-                                .getBook(state.pathParameters['bookId'] ?? ''),
+                          return MediaDetailsScreen(
+                            media: libraryInstance.getMedia(
+                                state.pathParameters['mediaId'] ?? ''),
                           );
                         },
                       ),
@@ -113,11 +114,11 @@ class _BookstoreState extends State<Bookstore> {
                         // TODO (johnpryan): remove when https://github.com/flutter/flutter/issues/108177 lands
                         child: Builder(
                           builder: (context) {
-                            return BookList(
-                              books: libraryInstance.newBooks,
-                              onTap: (book) {
+                            return MediaList(
+                              medias: libraryInstance.newBooks,
+                              onTap: (media) {
                                 GoRouter.of(context)
-                                    .go('/books/new/book/${book.id}');
+                                    .go('/books/new/book/${media.id}');
                               },
                             );
                           },
@@ -126,12 +127,12 @@ class _BookstoreState extends State<Bookstore> {
                     },
                     routes: [
                       GoRoute(
-                        path: 'book/:bookId',
+                        path: 'book/:mediaId',
                         parentNavigatorKey: appShellNavigatorKey,
                         builder: (context, state) {
-                          return BookDetailsScreen(
-                            book: libraryInstance
-                                .getBook(state.pathParameters['bookId'] ?? ''),
+                          return MediaDetailsScreen(
+                            media: libraryInstance.getMedia(
+                                state.pathParameters['mediaId'] ?? ''),
                           );
                         },
                       ),
@@ -146,11 +147,11 @@ class _BookstoreState extends State<Bookstore> {
                         // TODO (johnpryan): remove when https://github.com/flutter/flutter/issues/108177 lands
                         child: Builder(
                           builder: (context) {
-                            return BookList(
-                              books: libraryInstance.allBooks,
-                              onTap: (book) {
+                            return MediaList(
+                              medias: libraryInstance.allMedias,
+                              onTap: (media) {
                                 GoRouter.of(context)
-                                    .go('/books/all/book/${book.id}');
+                                    .go('/books/all/book/${media.id}');
                               },
                             );
                           },
@@ -159,12 +160,12 @@ class _BookstoreState extends State<Bookstore> {
                     },
                     routes: [
                       GoRoute(
-                        path: 'book/:bookId',
+                        path: 'book/:mediaId',
                         parentNavigatorKey: appShellNavigatorKey,
                         builder: (context, state) {
-                          return BookDetailsScreen(
-                            book: libraryInstance
-                                .getBook(state.pathParameters['bookId'] ?? ''),
+                          return MediaDetailsScreen(
+                            media: libraryInstance.getMedia(
+                                state.pathParameters['mediaId'] ?? ''),
                           );
                         },
                       ),

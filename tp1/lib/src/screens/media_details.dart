@@ -8,36 +8,36 @@ import 'package:url_launcher/link.dart';
 
 import '../data.dart';
 
-class BookDetailsScreen extends StatelessWidget {
-  final Book? book;
+class MediaDetailsScreen extends StatelessWidget {
+  final Media? media;
 
-  const BookDetailsScreen({
+  const MediaDetailsScreen({
     super.key,
-    this.book,
+    this.media,
   });
 
   @override
   Widget build(BuildContext context) {
-    if (book == null) {
+    if (media == null) {
       return const Scaffold(
         body: Center(
-          child: Text('No book found.'),
+          child: Text('No media found.'),
         ),
       );
     }
     return Scaffold(
       appBar: AppBar(
-        title: Text(book!.title),
+        title: Text(media!.title),
       ),
       body: Center(
         child: Column(
           children: [
             Text(
-              book!.title,
+              media!.title,
               style: Theme.of(context).textTheme.headlineMedium,
             ),
             Text(
-              book!.author456,
+              media!.author,
               style: Theme.of(context).textTheme.titleMedium,
             ),
           ],
