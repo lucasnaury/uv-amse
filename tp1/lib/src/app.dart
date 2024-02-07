@@ -87,7 +87,7 @@ class _MediastoreState extends State<Mediastore> {
                               medias: libraryInstance.films,
                               onTap: (media) {
                                 GoRouter.of(context)
-                                    .go('/medias/films/${media.id}');
+                                    .push('/medias/films/info/${media.id}');
                               },
                             );
                           },
@@ -96,7 +96,7 @@ class _MediastoreState extends State<Mediastore> {
                     },
                     routes: [
                       GoRoute(
-                        path: 'media/:mediaId',
+                        path: 'info/:mediaId',
                         parentNavigatorKey: appShellNavigatorKey,
                         builder: (context, state) {
                           return MediaDetailsScreen(
@@ -120,7 +120,7 @@ class _MediastoreState extends State<Mediastore> {
                               medias: libraryInstance.series,
                               onTap: (media) {
                                 GoRouter.of(context)
-                                    .go('/medias/series/${media.id}');
+                                    .push('/medias/series/info/${media.id}');
                               },
                             );
                           },
@@ -129,7 +129,7 @@ class _MediastoreState extends State<Mediastore> {
                     },
                     routes: [
                       GoRoute(
-                        path: 'media/:mediaId',
+                        path: 'info/:mediaId',
                         parentNavigatorKey: appShellNavigatorKey,
                         builder: (context, state) {
                           return MediaDetailsScreen(
@@ -153,7 +153,7 @@ class _MediastoreState extends State<Mediastore> {
                               medias: libraryInstance.livres,
                               onTap: (media) {
                                 GoRouter.of(context)
-                                    .go('/medias/livres/${media.id}');
+                                    .push('/medias/livres/info/${media.id}');
                               },
                             );
                           },
@@ -162,7 +162,7 @@ class _MediastoreState extends State<Mediastore> {
                     },
                     routes: [
                       GoRoute(
-                        path: 'media/:mediaId',
+                        path: 'info/:mediaId',
                         parentNavigatorKey: appShellNavigatorKey,
                         builder: (context, state) {
                           return MediaDetailsScreen(
@@ -185,7 +185,8 @@ class _MediastoreState extends State<Mediastore> {
                             return MediaList(
                               medias: libraryInstance.allMedias,
                               onTap: (media) {
-                                GoRouter.of(context).go('/liked/${media.id}');
+                                GoRouter.of(context)
+                                    .push('/medias/liked/info/${media.id}');
                               },
                             );
                           },
@@ -194,7 +195,7 @@ class _MediastoreState extends State<Mediastore> {
                     },
                     routes: [
                       GoRoute(
-                        path: 'media/:mediaId',
+                        path: 'info/:mediaId',
                         parentNavigatorKey: appShellNavigatorKey,
                         builder: (context, state) {
                           return MediaDetailsScreen(
