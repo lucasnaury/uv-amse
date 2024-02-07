@@ -49,25 +49,42 @@ class MyHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var appState = context.watch<MyAppState>();
-    var randomWord = appState.current;
+    var randomPair = appState.current;
+    var favorites = appState.favorites;
 
     return Scaffold(
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // Text('A random AWESOME idea:'),
-            BigCard(pair: randomWord),
+            BigCard(pair: randomPair),
             SizedBox(height: 10),
             Row(
-              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 ElevatedButton(
                   onPressed: () {
-                    appState.getNext();
+                    appState.toggleFavorite();
                   },
-                  child: Text('Like'),
+                  child: Row(
+                    children: [
+                      Icon(
+                        favorites.contains(randomPair)
+                            ? Icons.favorite
+                            : Icons.favorite_outline,
+                        size: 18.0,
+                        semanticLabel: favorites.contains(randomPair)
+                            ? 'Remove favorite'
+                            : 'Add favorite',
+                      ),
+                      SizedBox(width: 10),
+                      Text(
+                        favorites.contains(randomPair) ? 'Unlike' : 'Like',
+                      ),
+                    ],
+                  ),
                 ),
+                SizedBox(width: 15),
                 ElevatedButton(
                   onPressed: () {
                     appState.getNext();
@@ -103,7 +120,7 @@ class BigCard extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(20.0),
         child: Text(
-          pair.asLowerCase,
+          "${pair.first} ${pair.second}",
           style: style,
           semanticsLabel: "${pair.first} ${pair.second}",
         ),
