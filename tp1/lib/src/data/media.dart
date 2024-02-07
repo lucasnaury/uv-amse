@@ -6,8 +6,8 @@ class Media {
   final int id;
   final String title;
   final String author;
-  final bool isPopular;
-  final bool isNew;
+  final int type; //0:film, 1:série, 2:livre
+  final String img;
 
-  Media(this.id, this.title, this.isPopular, this.isNew, this.author);
+  Media(this.id, this.title, this.type, this.author, this.img);
 }
