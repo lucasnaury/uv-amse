@@ -104,4 +104,16 @@ class Library {
   Media getMedia(String id) {
     return allMedias[int.parse(id)];
   }
+
+  List<Media> get films {
+    return allMedias.where((m) => m.type == 0).toList();
+  }
+
+  List<Media> get series {
+    return allMedias.where((m) => m.type == 1).toList();
+  }
+
+  List<Media> get livres {
+    return allMedias.where((m) => m.type == 2).toList();
+  }
 }

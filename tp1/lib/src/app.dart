@@ -84,7 +84,7 @@ class _MediastoreState extends State<Mediastore> {
                         child: Builder(
                           builder: (context) {
                             return MediaList(
-                              medias: libraryInstance.popularMedias,
+                              medias: libraryInstance.films,
                               onTap: (media) {
                                 GoRouter.of(context)
                                     .go('/medias/films/book/${media.id}');
@@ -117,7 +117,7 @@ class _MediastoreState extends State<Mediastore> {
                         child: Builder(
                           builder: (context) {
                             return MediaList(
-                              medias: libraryInstance.newBooks,
+                              medias: libraryInstance.series,
                               onTap: (media) {
                                 GoRouter.of(context)
                                     .go('/medias/series/book/${media.id}');
@@ -150,7 +150,7 @@ class _MediastoreState extends State<Mediastore> {
                         child: Builder(
                           builder: (context) {
                             return MediaList(
-                              medias: libraryInstance.allMedias,
+                              medias: libraryInstance.livres,
                               onTap: (media) {
                                 GoRouter.of(context)
                                     .go('/medias/livres/book/${media.id}');
