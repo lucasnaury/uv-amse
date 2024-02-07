@@ -32,26 +32,69 @@ class MyAppState extends ChangeNotifier {
     current = WordPair.random();
     notifyListeners();
   }
+
+  var favorites = <WordPair>[];
+
+  void toggleFavorite() {
+    if (favorites.contains(current)) {
+      favorites.remove(current);
+    } else {
+      favorites.add(current);
+    }
+    notifyListeners();
+  }
 }
 
 class MyHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var appState = context.watch<MyAppState>();
-    var randomWord = appState.current;
+    var randomPair = appState.current;
+    var favorites = appState.favorites;
 
     return Scaffold(
-      body: Column(
-        children: [
-          Text('A random AWESOME idea:'),
-          BigCard(pair: randomWord),
-          ElevatedButton(
-            onPressed: () {
-              appState.getNext();
-            },
-            child: Text('Next'),
-          ),
-        ],
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            BigCard(pair: randomPair),
+            SizedBox(height: 10),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ElevatedButton(
+                  onPressed: () {
+                    appState.toggleFavorite();
+                  },
+                  child: Row(
+                    children: [
+                      Icon(
+                        favorites.contains(randomPair)
+                            ? Icons.favorite
+                            : Icons.favorite_outline,
+                        size: 18.0,
+                        semanticLabel: favorites.contains(randomPair)
+                            ? 'Remove favorite'
+                            : 'Add favorite',
+                      ),
+                      SizedBox(width: 10),
+                      Text(
+                        favorites.contains(randomPair) ? 'Unlike' : 'Like',
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(width: 15),
+                ElevatedButton(
+                  onPressed: () {
+                    appState.getNext();
+                  },
+                  child: Text('Next'),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -77,7 +120,7 @@ class BigCard extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(20.0),
         child: Text(
-          pair.asLowerCase,
+          "${pair.first} ${pair.second}",
           style: style,
           semanticsLabel: "${pair.first} ${pair.second}",
         ),
