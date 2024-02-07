@@ -37,7 +37,7 @@ class _MediastoreState extends State<Mediastore> {
               return MediastoreScaffold(
                 selectedIndex: switch (state.uri.path) {
                   var p when p.startsWith('/books') => 0,
-                  var p when p.startsWith('/authors') => 1,
+                  var p when p.startsWith('/liked') => 1,
                   _ => 0,
                 },
                 child: child,
@@ -57,6 +57,7 @@ class _MediastoreState extends State<Mediastore> {
                             0 => '/books/popular',
                             1 => '/books/new',
                             2 => '/books/all',
+                            3 => '/liked',
                             _ => '/books/popular',
                           });
                         },
@@ -64,6 +65,7 @@ class _MediastoreState extends State<Mediastore> {
                           var p when p.startsWith('/books/popular') => 0,
                           var p when p.startsWith('/books/new') => 1,
                           var p when p.startsWith('/books/all') => 2,
+                          var p when p.startsWith('/liked') => 3,
                           _ => 0,
                         },
                         child: child,
@@ -152,6 +154,38 @@ class _MediastoreState extends State<Mediastore> {
                               onTap: (media) {
                                 GoRouter.of(context)
                                     .go('/books/all/book/${media.id}');
+                              },
+                            );
+                          },
+                        ),
+                      );
+                    },
+                    routes: [
+                      GoRoute(
+                        path: 'book/:mediaId',
+                        parentNavigatorKey: appShellNavigatorKey,
+                        builder: (context, state) {
+                          return MediaDetailsScreen(
+                            media: libraryInstance.getMedia(
+                                state.pathParameters['mediaId'] ?? ''),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                  GoRoute(
+                    path: '/liked',
+                    pageBuilder: (context, state) {
+                      return FadeTransitionPage<dynamic>(
+                        key: state.pageKey,
+                        // Use a builder to get the correct BuildContext
+                        // TODO (johnpryan): remove when https://github.com/flutter/flutter/issues/108177 lands
+                        child: Builder(
+                          builder: (context) {
+                            return MediaList(
+                              medias: libraryInstance.allMedias,
+                              onTap: (media) {
+                                GoRouter.of(context).go('/liked/${media.id}');
                               },
                             );
                           },
