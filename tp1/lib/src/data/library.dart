@@ -116,4 +116,8 @@ class Library {
   List<Media> get livres {
     return allMedias.where((m) => m.type == 2).toList();
   }
+
+  List<Media> get liked {
+    return allMedias.where((m) => m.liked).toList();
+  }
 }
