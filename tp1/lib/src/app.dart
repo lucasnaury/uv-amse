@@ -25,6 +25,12 @@ class Mediastore extends StatefulWidget {
 }
 
 class _MediastoreState extends State<Mediastore> {
+  void toggleFav(int id) {
+    setState(() {
+      libraryInstance.toggleFavorite(id);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
@@ -75,22 +81,14 @@ class _MediastoreState extends State<Mediastore> {
                 routes: [
                   GoRoute(
                     path: '/medias/films',
-                    pageBuilder: (context, state) {
-                      return FadeTransitionPage<dynamic>(
-                        // Use a builder to get the correct BuildContext
-                        // TODO (johnpryan): remove when https://github.com/flutter/flutter/issues/108177 lands
-                        key: state.pageKey,
-                        child: Builder(
-                          builder: (context) {
-                            return MediaList(
-                              medias: libraryInstance.films,
-                              onTap: (media) {
-                                GoRouter.of(context)
-                                    .push('/medias/films/info/${media.id}');
-                              },
-                            );
-                          },
-                        ),
+                    builder: (context, state) {
+                      return MediaList(
+                        medias: libraryInstance.films,
+                        toggleLikeCallback: toggleFav,
+                        onTap: (media) {
+                          GoRouter.of(context)
+                              .push('/medias/films/info/${media.id}');
+                        },
                       );
                     },
                     routes: [
@@ -117,6 +115,7 @@ class _MediastoreState extends State<Mediastore> {
                           builder: (context) {
                             return MediaList(
                               medias: libraryInstance.series,
+                              toggleLikeCallback: toggleFav,
                               onTap: (media) {
                                 GoRouter.of(context)
                                     .push('/medias/series/info/${media.id}');
@@ -150,6 +149,7 @@ class _MediastoreState extends State<Mediastore> {
                           builder: (context) {
                             return MediaList(
                               medias: libraryInstance.livres,
+                              toggleLikeCallback: toggleFav,
                               onTap: (media) {
                                 GoRouter.of(context)
                                     .push('/medias/livres/info/${media.id}');
@@ -199,6 +199,7 @@ class _MediastoreState extends State<Mediastore> {
                           builder: (context) {
                             return MediaList(
                               medias: libraryInstance.liked,
+                              toggleLikeCallback: toggleFav,
                               onTap: (media) {
                                 GoRouter.of(context)
                                     .push('/liked/info/${media.id}');

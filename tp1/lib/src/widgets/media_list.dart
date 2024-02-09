@@ -6,27 +6,46 @@ import 'package:flutter/material.dart';
 
 import '../data.dart';
 
-class MediaList extends StatelessWidget {
+class MediaList extends StatefulWidget {
   final List<Media> medias;
+  final Function toggleLikeCallback;
   final ValueChanged<Media>? onTap;
 
   const MediaList({
     required this.medias,
+    required this.toggleLikeCallback,
     this.onTap,
     super.key,
   });
 
   @override
+  State<MediaList> createState() => _MediaListState();
+}
+
+class _MediaListState extends State<MediaList> {
+  @override
   Widget build(BuildContext context) => ListView.builder(
-        itemCount: medias.length,
+        itemCount: widget.medias.length,
         itemBuilder: (context, index) => ListTile(
           title: Text(
-            medias[index].title,
+            widget.medias[index].title,
           ),
           subtitle: Text(
-            medias[index].author,
+            widget.medias[index].author,
           ),
-          onTap: onTap != null ? () => onTap!(medias[index]) : null,
+          trailing: IconButton(
+            icon: Icon(widget.medias[index].liked
+                ? Icons.favorite
+                : Icons.favorite_outlined),
+            onPressed: (() => {
+                  setState(() {
+                    widget.toggleLikeCallback(index);
+                  }),
+                }),
+          ),
+          onTap: widget.onTap != null
+              ? () => widget.onTap!(widget.medias[index])
+              : null,
         ),
       );
 }

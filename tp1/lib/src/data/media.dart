@@ -8,7 +8,7 @@ class Media {
   final String author;
   final int type; //0:film, 1:série, 2:livre
   final String img;
-  final bool liked = false;
+  bool liked = false;
 
   Media(this.id, this.title, this.type, this.author, this.img);
 }
