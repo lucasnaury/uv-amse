@@ -30,11 +30,11 @@ class MediastoreScaffold extends StatelessWidget {
         },
         destinations: const [
           AdaptiveScaffoldDestination(
-            title: 'Media',
+            title: 'Medias',
             icon: Icons.list,
           ),
           AdaptiveScaffoldDestination(
-            title: 'Liked',
+            title: 'Favoris',
             icon: Icons.favorite,
           ),
         ],

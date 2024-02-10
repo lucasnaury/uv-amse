@@ -24,32 +24,42 @@ class MediaList extends StatefulWidget {
 
 class _MediaListState extends State<MediaList> {
   @override
-  Widget build(BuildContext context) => ListView.builder(
-        itemCount: widget.medias.length,
-        itemBuilder: (context, index) => ListTile(
-          leading: Image.asset(
-            widget.medias[index].img,
-            width: 50,
-            height: 50,
+  Widget build(BuildContext context) => widget.medias.length > 0
+      ? ListView.builder(
+          itemCount: widget.medias.length,
+          itemBuilder: (context, index) => ListTile(
+            leading: Image.asset(
+              widget.medias[index].img,
+              width: 50,
+              height: 50,
+            ),
+            title: Text(
+              widget.medias[index].title,
+            ),
+            subtitle: Text(
+              widget.medias[index].author,
+            ),
+            trailing: IconButton(
+                onPressed: (() {
+                  setState(() {
+                    widget.toggleLikeCallback(widget.medias[index].id);
+                  });
+                }),
+                icon: widget.medias[index].liked
+                    ? Icon(Icons.favorite)
+                    : Icon(Icons.favorite_outline)),
+            onTap: widget.onTap != null
+                ? () => widget.onTap!(widget.medias[index])
+                : null,
           ),
-          title: Text(
-            widget.medias[index].title,
-          ),
-          subtitle: Text(
-            widget.medias[index].author,
-          ),
-          trailing: IconButton(
-              onPressed: (() {
-                setState(() {
-                  widget.toggleLikeCallback(widget.medias[index].id);
-                });
-              }),
-              icon: widget.medias[index].liked
-                  ? Icon(Icons.favorite)
-                  : Icon(Icons.favorite_outline)),
-          onTap: widget.onTap != null
-              ? () => widget.onTap!(widget.medias[index])
-              : null,
-        ),
-      );
+        )
+      : Center(
+          child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(Icons.cancel_outlined),
+            SizedBox(height: 10),
+            Text("Aucun média"),
+          ],
+        ));
 }

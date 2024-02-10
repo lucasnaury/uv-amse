@@ -32,7 +32,7 @@ class _LikedScreenState extends State<LikedScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Liked'),
+        title: const Text('Favoris'),
       ),
       body: widget.child,
     );
