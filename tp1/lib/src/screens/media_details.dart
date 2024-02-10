@@ -29,18 +29,25 @@ class MediaDetailsScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text(media!.title),
       ),
-      body: Center(
-        child: Column(
-          children: [
-            Text(
-              media!.title,
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-            Text(
-              media!.author,
-              style: Theme.of(context).textTheme.titleMedium,
-            ),
-          ],
+      body: SafeArea(
+        child: Center(
+          child: Column(
+            children: [
+              Image.asset(
+                media!.img,
+                width: 300,
+              ),
+              SizedBox(height: 20),
+              Text(
+                media!.title,
+                style: Theme.of(context).textTheme.headlineMedium,
+              ),
+              Text(
+                media!.author,
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
+            ],
+          ),
         ),
       ),
     );

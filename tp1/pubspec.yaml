@@ -21,4 +21,6 @@ dependencies:
 flutter:
   uses-material-design: true
   assets:
-    - assets/imgs/  
+    - assets/imgs/films/
+    - assets/imgs/livres/
+    - assets/imgs/series/

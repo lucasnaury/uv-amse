@@ -27,6 +27,11 @@ class _MediaListState extends State<MediaList> {
   Widget build(BuildContext context) => ListView.builder(
         itemCount: widget.medias.length,
         itemBuilder: (context, index) => ListTile(
+          leading: Image.asset(
+            widget.medias[index].img,
+            width: 50,
+            height: 50,
+          ),
           title: Text(
             widget.medias[index].title,
           ),
