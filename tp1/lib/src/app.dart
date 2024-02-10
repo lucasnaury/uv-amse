@@ -11,7 +11,6 @@ import 'screens/media_details.dart';
 import 'screens/medias.dart';
 import 'screens/scaffold.dart';
 import 'widgets/media_list.dart';
-import 'widgets/fade_transition_page.dart';
 
 final appShellNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'app shell');
 final mediasNavigatorKey =
@@ -110,7 +109,7 @@ class _MediastoreState extends State<Mediastore> {
                       medias: libraryInstance.liked,
                       toggleLikeCallback: toggleFav,
                       onTap: (media) {
-                        GoRouter.of(context).push('/medias/info/${media.id}');
+                        GoRouter.of(context).push('/liked/info/${media.id}');
                       },
                     ),
                   );
