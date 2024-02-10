@@ -7,11 +7,11 @@ import 'package:flutter/material.dart';
 import '../data.dart';
 
 class MediaList extends StatefulWidget {
-  final List<Media> medias;
+  List<Media> medias;
   final Function toggleLikeCallback;
   final ValueChanged<Media>? onTap;
 
-  const MediaList({
+  MediaList({
     required this.medias,
     required this.toggleLikeCallback,
     this.onTap,
@@ -44,7 +44,7 @@ class _MediaListState extends State<MediaList> {
                 : Icons.favorite_outlined),
             onPressed: (() => {
                   setState(() {
-                    widget.toggleLikeCallback(index);
+                    widget.toggleLikeCallback(widget.medias[index].id);
                   }),
                 }),
           ),

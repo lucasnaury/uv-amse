@@ -31,12 +31,27 @@ class _MediastoreState extends State<Mediastore> {
     });
   }
 
+  List<Media> getMedias(int id) {
+    switch (id) {
+      case 0:
+        return libraryInstance.films;
+      case 1:
+        return libraryInstance.series;
+      case 2:
+        return libraryInstance.livres;
+    }
+
+    return libraryInstance.allMedias;
+  }
+
+  int mediaIndex = 0;
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
       routerConfig: GoRouter(
         debugLogDiagnostics: true,
-        initialLocation: '/medias/films',
+        initialLocation: '/medias',
         routes: [
           ShellRoute(
             navigatorKey: appShellNavigatorKey,
@@ -51,176 +66,61 @@ class _MediastoreState extends State<Mediastore> {
               );
             },
             routes: [
-              ShellRoute(
-                pageBuilder: (context, state, child) {
-                  return FadeTransitionPage<dynamic>(
-                    key: state.pageKey,
-                    // Use a builder to get the correct BuildContext
-                    // TODO (johnpryan): remove when https://github.com/flutter/flutter/issues/108177 lands
-                    child: Builder(builder: (context) {
-                      return MediasScreen(
-                        onTap: (idx) {
-                          GoRouter.of(context).go(switch (idx) {
-                            0 => '/medias/films',
-                            1 => '/medias/series',
-                            2 => '/medias/livres',
-                            _ => '/medias/films',
-                          });
-                        },
-                        selectedIndex: switch (state.uri.path) {
-                          var p when p.startsWith('/medias/films') => 0,
-                          var p when p.startsWith('/medias/series') => 1,
-                          var p when p.startsWith('/medias/livres') => 2,
-                          _ => 0,
-                        },
-                        child: child,
-                      );
-                    }),
+              GoRoute(
+                path: '/medias',
+                builder: (context, state) {
+                  return MediasScreen(
+                    onTap: (int id) {
+                      setState(() {
+                        mediaIndex = id;
+                      });
+                    },
+                    selectedIndex: mediaIndex,
+                    child: MediaList(
+                      medias: getMedias(mediaIndex),
+                      toggleLikeCallback: toggleFav,
+                      onTap: (media) {
+                        GoRouter.of(context).push('/medias/info/${media.id}');
+                      },
+                    ),
                   );
                 },
                 routes: [
                   GoRoute(
-                    path: '/medias/films',
+                    path: 'info/:mediaId',
+                    parentNavigatorKey: appShellNavigatorKey,
                     builder: (context, state) {
-                      return MediaList(
-                        medias: libraryInstance.films,
-                        toggleLikeCallback: toggleFav,
-                        onTap: (media) {
-                          GoRouter.of(context)
-                              .push('/medias/films/info/${media.id}');
-                        },
+                      return MediaDetailsScreen(
+                        media: libraryInstance
+                            .getMedia(state.pathParameters['mediaId'] ?? ''),
                       );
                     },
-                    routes: [
-                      GoRoute(
-                        path: 'info/:mediaId',
-                        parentNavigatorKey: appShellNavigatorKey,
-                        builder: (context, state) {
-                          return MediaDetailsScreen(
-                            media: libraryInstance.getMedia(
-                                state.pathParameters['mediaId'] ?? ''),
-                          );
-                        },
-                      ),
-                    ],
-                  ),
-                  GoRoute(
-                    path: '/medias/series',
-                    pageBuilder: (context, state) {
-                      return FadeTransitionPage<dynamic>(
-                        key: state.pageKey,
-                        // Use a builder to get the correct BuildContext
-                        // TODO (johnpryan): remove when https://github.com/flutter/flutter/issues/108177 lands
-                        child: Builder(
-                          builder: (context) {
-                            return MediaList(
-                              medias: libraryInstance.series,
-                              toggleLikeCallback: toggleFav,
-                              onTap: (media) {
-                                GoRouter.of(context)
-                                    .push('/medias/series/info/${media.id}');
-                              },
-                            );
-                          },
-                        ),
-                      );
-                    },
-                    routes: [
-                      GoRoute(
-                        path: 'info/:mediaId',
-                        parentNavigatorKey: appShellNavigatorKey,
-                        builder: (context, state) {
-                          return MediaDetailsScreen(
-                            media: libraryInstance.getMedia(
-                                state.pathParameters['mediaId'] ?? ''),
-                          );
-                        },
-                      ),
-                    ],
-                  ),
-                  GoRoute(
-                    path: '/medias/livres',
-                    pageBuilder: (context, state) {
-                      return FadeTransitionPage<dynamic>(
-                        key: state.pageKey,
-                        // Use a builder to get the correct BuildContext
-                        // TODO (johnpryan): remove when https://github.com/flutter/flutter/issues/108177 lands
-                        child: Builder(
-                          builder: (context) {
-                            return MediaList(
-                              medias: libraryInstance.livres,
-                              toggleLikeCallback: toggleFav,
-                              onTap: (media) {
-                                GoRouter.of(context)
-                                    .push('/medias/livres/info/${media.id}');
-                              },
-                            );
-                          },
-                        ),
-                      );
-                    },
-                    routes: [
-                      GoRoute(
-                        path: 'info/:mediaId',
-                        parentNavigatorKey: appShellNavigatorKey,
-                        builder: (context, state) {
-                          return MediaDetailsScreen(
-                            media: libraryInstance.getMedia(
-                                state.pathParameters['mediaId'] ?? ''),
-                          );
-                        },
-                      ),
-                    ],
                   ),
                 ],
               ),
-              ShellRoute(
-                pageBuilder: (context, state, child) {
-                  return FadeTransitionPage<dynamic>(
-                    key: state.pageKey,
-                    // Use a builder to get the correct BuildContext
-                    // TODO (johnpryan): remove when https://github.com/flutter/flutter/issues/108177 lands
-                    child: Builder(builder: (context) {
-                      return LikedScreen(
-                        child: child,
-                      );
-                    }),
+              GoRoute(
+                path: '/liked',
+                builder: (context, state) {
+                  return LikedScreen(
+                    child: MediaList(
+                      medias: libraryInstance.liked,
+                      toggleLikeCallback: toggleFav,
+                      onTap: (media) {
+                        GoRouter.of(context).push('/medias/info/${media.id}');
+                      },
+                    ),
                   );
                 },
                 routes: [
                   GoRoute(
-                    path: '/liked',
-                    pageBuilder: (context, state) {
-                      return FadeTransitionPage<dynamic>(
-                        key: state.pageKey,
-                        // Use a builder to get the correct BuildContext
-                        // TODO (johnpryan): remove when https://github.com/flutter/flutter/issues/108177 lands
-                        child: Builder(
-                          builder: (context) {
-                            return MediaList(
-                              medias: libraryInstance.liked,
-                              toggleLikeCallback: toggleFav,
-                              onTap: (media) {
-                                GoRouter.of(context)
-                                    .push('/liked/info/${media.id}');
-                              },
-                            );
-                          },
-                        ),
+                    path: 'info/:mediaId',
+                    parentNavigatorKey: appShellNavigatorKey,
+                    builder: (context, state) {
+                      return MediaDetailsScreen(
+                        media: libraryInstance
+                            .getMedia(state.pathParameters['mediaId'] ?? ''),
                       );
                     },
-                    routes: [
-                      GoRoute(
-                        path: 'info/:mediaId',
-                        parentNavigatorKey: appShellNavigatorKey,
-                        builder: (context, state) {
-                          return MediaDetailsScreen(
-                            media: libraryInstance.getMedia(
-                                state.pathParameters['mediaId'] ?? ''),
-                          );
-                        },
-                      ),
-                    ],
                   ),
                 ],
               ),
