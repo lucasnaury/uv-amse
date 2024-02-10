@@ -1,5 +1,5 @@
-name: bookstore
-description: Navigation and routing sample app
+name: media_app
+description: Application de gestion de médias
 publish_to: "none" # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
@@ -17,10 +17,6 @@ dependencies:
   quiver: ^3.1.0
   url_launcher: ^6.1.1
   url_strategy: ^0.2.0
-  window_size:
-    git:
-      url: https://github.com/google/flutter-desktop-embedding.git
-      path: plugins/window_size
 
 flutter:
   uses-material-design: true
