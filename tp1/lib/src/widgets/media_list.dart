@@ -39,15 +39,14 @@ class _MediaListState extends State<MediaList> {
             widget.medias[index].author,
           ),
           trailing: IconButton(
-            icon: Icon(widget.medias[index].liked
-                ? Icons.favorite
-                : Icons.favorite_outlined),
-            onPressed: (() => {
-                  setState(() {
-                    widget.toggleLikeCallback(widget.medias[index].id);
-                  }),
-                }),
-          ),
+              onPressed: (() {
+                setState(() {
+                  widget.toggleLikeCallback(widget.medias[index].id);
+                });
+              }),
+              icon: widget.medias[index].liked
+                  ? Icon(Icons.favorite)
+                  : Icon(Icons.favorite_outline)),
           onTap: widget.onTap != null
               ? () => widget.onTap!(widget.medias[index])
               : null,
