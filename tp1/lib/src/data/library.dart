@@ -40,8 +40,6 @@ class Library {
 
   void toggleFavorite(int id) {
     allMedias[id].liked = !allMedias[id].liked;
-
-    print("GLOBAL " + (allMedias[id].liked).toString());
   }
 
   List<Media> get films {
