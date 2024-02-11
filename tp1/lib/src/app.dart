@@ -36,7 +36,7 @@ class Mediastore extends StatefulWidget {
 
 class _MediastoreState extends State<Mediastore> {
   // Create the library
-  Library libraryInstance = initLibrary();
+  Library libraryInstance = initLibraryFromJson();
 
   //Toggle favorite function
   void toggleFav(int id) {

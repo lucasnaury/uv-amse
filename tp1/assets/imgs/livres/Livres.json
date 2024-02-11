@@ -1,0 +1,26 @@
+[
+  {
+    "title": "Attaque des Titans",
+    "authorName": "Hajime Isayama",
+    "type": 2,
+    "img": "assets/imgs/livres/attaque-des-titans.jpg"
+  },
+  {
+    "title": "Cherub",
+    "authorName": "test name",
+    "type": 2,
+    "img": "assets/imgs/livres/cherub.jpg"
+  },
+  {
+    "title": "Harry Potter",
+    "authorName": "test name",
+    "type": 2,
+    "img": "assets/imgs/livres/harry-potter.jpg"
+  },
+  {
+    "title": "Seigneur des anneaux",
+    "authorName": "test name",
+    "type": 2,
+    "img": "assets/imgs/livres/seigneur-des-anneaux.jpg"
+  }
+]
