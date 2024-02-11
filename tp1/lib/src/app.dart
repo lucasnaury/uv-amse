@@ -49,6 +49,7 @@ class _MediastoreState extends State<Mediastore> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
+      debugShowCheckedModeBanner: false,
       routerConfig: GoRouter(
         debugLogDiagnostics: true,
         initialLocation: '/medias',
