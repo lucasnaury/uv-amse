@@ -10,7 +10,7 @@ class Library {
   final List<Media> allMedias = [];
 
   Future<void> initLibraryFromJson() async {
-    String jsonString = await rootBundle.loadString('medias.json');
+    String jsonString = await rootBundle.loadString('assets/medias.json');
     List<dynamic> jsonList = json.decode(jsonString);
 
     for (var jsonData in jsonList) {
