@@ -12,6 +12,17 @@ import 'screens/medias.dart';
 import 'screens/scaffold.dart';
 import 'widgets/media_list.dart';
 
+extension GoRouterExtension on GoRouter {
+  String location() {
+    final RouteMatch lastMatch = routerDelegate.currentConfiguration.last;
+    final RouteMatchList matchList = lastMatch is ImperativeRouteMatch
+        ? lastMatch.matches
+        : routerDelegate.currentConfiguration;
+    final String location = matchList.uri.toString();
+    return location;
+  }
+}
+
 final appShellNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'app shell');
 final mediasNavigatorKey =
     GlobalKey<NavigatorState>(debugLabel: 'medias shell');
@@ -32,6 +43,12 @@ class _MediastoreState extends State<Mediastore> {
     setState(() {
       libraryInstance.toggleFavorite(id);
     });
+    final currentPath = GoRouter.of(context).location();
+    // Vérifiez si l'utilisateur est actuellement sur la page "liked"
+    // Si oui, forcez une mise à jour de l'interface utilisateur pour refléter les changements
+    if (currentPath.startsWith('/liked')) {
+      GoRouter.of(context).refresh();
+    }
   }
 
   List<Media> getMedias(int id) {
