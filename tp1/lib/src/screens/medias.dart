@@ -3,16 +3,19 @@
 // BSD-style license that can be found in the LICENSE file.
 
 import 'package:flutter/material.dart';
+import 'package:media_app/src/widgets/media_list.dart';
+
+import '../data.dart';
 
 class MediasScreen extends StatefulWidget {
-  final Widget child;
-  final ValueChanged<int> onTap;
-  final int selectedIndex;
+  final Library library;
+  final ValueChanged<Media> onTap;
+  final Function toggleFavCallback;
 
   const MediasScreen({
-    required this.child,
+    required this.library,
     required this.onTap,
-    required this.selectedIndex,
+    required this.toggleFavCallback,
     super.key,
   });
 
@@ -22,50 +25,60 @@ class MediasScreen extends StatefulWidget {
 
 class _MediasScreenState extends State<MediasScreen>
     with SingleTickerProviderStateMixin {
-  late TabController _tabController;
-
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 3, vsync: this)
-      ..addListener(_handleTabIndexChanged);
   }
 
   @override
   void dispose() {
-    _tabController.removeListener(_handleTabIndexChanged);
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    _tabController.index = widget.selectedIndex;
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Medias'),
-        bottom: TabBar(
-          controller: _tabController,
-          tabs: const [
-            Tab(
-              text: 'Films',
-              icon: Icon(Icons.camera_roll),
+    return DefaultTabController(
+      length: 3,
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Medias'),
+          bottom: TabBar(
+            tabs: const [
+              Tab(
+                text: 'Films',
+                icon: Icon(Icons.camera_roll),
+              ),
+              Tab(
+                text: 'Séries',
+                icon: Icon(Icons.live_tv),
+              ),
+              Tab(
+                text: 'Livres',
+                icon: Icon(Icons.menu_book),
+              ),
+            ],
+          ),
+        ),
+        body: TabBarView(
+          children: [
+            MediaList(
+              medias: widget.library.films,
+              toggleFavCallback: widget.toggleFavCallback,
+              onTap: widget.onTap,
             ),
-            Tab(
-              text: 'Séries',
-              icon: Icon(Icons.live_tv),
+            MediaList(
+              medias: widget.library.series,
+              toggleFavCallback: widget.toggleFavCallback,
+              onTap: widget.onTap,
             ),
-            Tab(
-              text: 'Livres',
-              icon: Icon(Icons.menu_book),
-            ),
+            MediaList(
+              medias: widget.library.livres,
+              toggleFavCallback: widget.toggleFavCallback,
+              onTap: widget.onTap,
+            )
           ],
         ),
       ),
-      body: widget.child,
     );
-  }
-
-  void _handleTabIndexChanged() {
-    widget.onTap(_tabController.index);
   }
 }

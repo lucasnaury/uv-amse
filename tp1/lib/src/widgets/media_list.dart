@@ -8,12 +8,12 @@ import '../data.dart';
 
 class MediaList extends StatefulWidget {
   List<Media> medias;
-  final Function toggleLikeCallback;
+  final Function toggleFavCallback;
   final ValueChanged<Media>? onTap;
 
   MediaList({
     required this.medias,
-    required this.toggleLikeCallback,
+    required this.toggleFavCallback,
     this.onTap,
     super.key,
   });
@@ -42,7 +42,7 @@ class _MediaListState extends State<MediaList> {
             trailing: IconButton(
                 onPressed: (() {
                   setState(() {
-                    widget.toggleLikeCallback(widget.medias[index].id);
+                    widget.toggleFavCallback(widget.medias[index].id);
                   });
                 }),
                 icon: widget.medias[index].liked

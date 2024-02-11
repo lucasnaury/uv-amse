@@ -44,19 +44,6 @@ class _MediastoreState extends State<Mediastore> {
     });
   }
 
-  List<Media> getMedias(int id) {
-    switch (id) {
-      case 0:
-        return widget.libraryInstance.films;
-      case 1:
-        return widget.libraryInstance.series;
-      case 2:
-        return widget.libraryInstance.livres;
-    }
-
-    return widget.libraryInstance.allMedias;
-  }
-
   int mediaIndex = 0;
 
   @override
@@ -84,19 +71,10 @@ class _MediastoreState extends State<Mediastore> {
                 path: '/medias',
                 builder: (context, state) {
                   return MediasScreen(
-                    onTap: (int id) {
-                      setState(() {
-                        mediaIndex = id;
-                      });
-                    },
-                    selectedIndex: mediaIndex,
-                    child: MediaList(
-                      medias: getMedias(mediaIndex),
-                      toggleLikeCallback: toggleFav,
-                      onTap: (media) {
-                        GoRouter.of(context).push('/medias/info/${media.id}');
-                      },
-                    ),
+                    library: widget.libraryInstance,
+                    onTap: (media) =>
+                        GoRouter.of(context).push('/medias/info/${media.id}'),
+                    toggleFavCallback: toggleFav,
                   );
                 },
                 routes: [
@@ -118,10 +96,9 @@ class _MediastoreState extends State<Mediastore> {
                   return LikedScreen(
                     child: MediaList(
                       medias: widget.libraryInstance.liked,
-                      toggleLikeCallback: toggleFav,
-                      onTap: (media) {
-                        GoRouter.of(context).push('/liked/info/${media.id}');
-                      },
+                      toggleFavCallback: toggleFav,
+                      onTap: (media) =>
+                          GoRouter.of(context).push('/liked/info/${media.id}'),
                     ),
                   );
                 },
