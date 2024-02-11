@@ -24,5 +24,7 @@ void main() async {
   var library = Library();
   await library.initLibraryFromJson();
 
-  runApp(const Mediastore());
+  runApp(Mediastore(
+    libraryInstance: library,
+  ));
 }

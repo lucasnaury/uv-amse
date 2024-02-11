@@ -28,20 +28,18 @@ final mediasNavigatorKey =
     GlobalKey<NavigatorState>(debugLabel: 'medias shell');
 
 class Mediastore extends StatefulWidget {
-  const Mediastore({super.key});
+  final Library libraryInstance;
+  const Mediastore({required this.libraryInstance, super.key});
 
   @override
   State<Mediastore> createState() => _MediastoreState();
 }
 
 class _MediastoreState extends State<Mediastore> {
-  // Create the library
-  Library libraryInstance = initLibrary();
-
   //Toggle favorite function
   void toggleFav(int id) {
     setState(() {
-      libraryInstance.toggleFavorite(id);
+      widget.libraryInstance.toggleFavorite(id);
     });
     final currentPath = GoRouter.of(context).location();
     // Vérifiez si l'utilisateur est actuellement sur la page "liked"
@@ -54,14 +52,14 @@ class _MediastoreState extends State<Mediastore> {
   List<Media> getMedias(int id) {
     switch (id) {
       case 0:
-        return libraryInstance.films;
+        return widget.libraryInstance.films;
       case 1:
-        return libraryInstance.series;
+        return widget.libraryInstance.series;
       case 2:
-        return libraryInstance.livres;
+        return widget.libraryInstance.livres;
     }
 
-    return libraryInstance.allMedias;
+    return widget.libraryInstance.allMedias;
   }
 
   int mediaIndex = 0;
@@ -111,7 +109,7 @@ class _MediastoreState extends State<Mediastore> {
                     parentNavigatorKey: appShellNavigatorKey,
                     builder: (context, state) {
                       return MediaDetailsScreen(
-                        media: libraryInstance
+                        media: widget.libraryInstance
                             .getMedia(state.pathParameters['mediaId'] ?? ''),
                       );
                     },
@@ -123,7 +121,7 @@ class _MediastoreState extends State<Mediastore> {
                 builder: (context, state) {
                   return LikedScreen(
                     child: MediaList(
-                      medias: libraryInstance.liked,
+                      medias: widget.libraryInstance.liked,
                       toggleLikeCallback: toggleFav,
                       onTap: (media) {
                         GoRouter.of(context).push('/liked/info/${media.id}');
@@ -137,7 +135,7 @@ class _MediastoreState extends State<Mediastore> {
                     parentNavigatorKey: appShellNavigatorKey,
                     builder: (context, state) {
                       return MediaDetailsScreen(
-                        media: libraryInstance
+                        media: widget.libraryInstance
                             .getMedia(state.pathParameters['mediaId'] ?? ''),
                       );
                     },
