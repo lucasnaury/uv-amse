@@ -3,10 +3,11 @@
 // BSD-style license that can be found in the LICENSE file.
 import 'package:flutter/material.dart';
 import 'package:url_strategy/url_strategy.dart';
+import 'src/data/library.dart'; // Importez votre classe Library depuis le fichier où vous l'avez définie
 
 import 'src/app.dart';
 
-void main() {
+void main() async {
   // Use package:url_strategy until this pull request is released:
   // https://github.com/flutter/flutter/pull/77103
 
@@ -17,6 +18,11 @@ void main() {
   // On mobile platforms, both functions are no-ops.
   setHashUrlStrategy();
   // setPathUrlStrategy();
+
+  WidgetsFlutterBinding.ensureInitialized();
+
+  var library = Library();
+  await library.initLibraryFromJson();
 
   runApp(const Mediastore());
 }

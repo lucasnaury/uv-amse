@@ -60,12 +60,3 @@ class Library {
     return allMedias.where((m) => m.liked).toList();
   }
 }
-
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-
-  var library = Library();
-  await library.initLibraryFromJson();
-
-  runApp(MyApp());
-}
