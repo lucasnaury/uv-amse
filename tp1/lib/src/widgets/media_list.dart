@@ -31,7 +31,7 @@ class _MediaListState extends State<MediaList> {
             leading: Image.asset(
               widget.medias[index].img,
               width: 50,
-              height: 50,
+              height: 200,
             ),
             title: Text(
               widget.medias[index].title,

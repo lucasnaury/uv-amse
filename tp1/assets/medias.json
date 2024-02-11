@@ -1,7 +1,7 @@
 [
     {
       "title": "Avengers",
-      "authorName": "Ursula K. Le Guin",
+      "authorName": "Joss Whedon",
       "type": 0,
       "img": "assets/imgs/films/avengers.jpg"
     },
@@ -31,49 +31,49 @@
     },
     {
       "title": "Cherub",
-      "authorName": "test name",
+      "authorName": "Robert Muchamore",
       "type": 2,
       "img": "assets/imgs/livres/cherub.jpg"
     },
     {
       "title": "Harry Potter",
-      "authorName": "test name",
+      "authorName": "J.K. Rowling",
       "type": 2,
       "img": "assets/imgs/livres/harry-potter.jpg"
     },
     {
       "title": "Seigneur des anneaux",
-      "authorName": "test name",
+      "authorName": "J.R.R. Tolkien",
       "type": 2,
       "img": "assets/imgs/livres/seigneur-des-anneaux.jpg"
     },
     {
       "title": "Downton Abbey",
-      "authorName": "test name",
+      "authorName": "Julian Fellowes",
       "type": 1,
       "img": "assets/imgs/series/downton-abbey.jpg"
     },
     {
       "title": "Friends",
-      "authorName": "test name",
+      "authorName": "Marta Kauffman, David Crane",
       "type": 1,
       "img": "assets/imgs/series/friends.jpg"
     },
     {
       "title": "Game Of Thrones",
-      "authorName": "test name",
+      "authorName": "George R. R. Martin",
       "type": 1,
       "img": "assets/imgs/series/game-of-thrones.jpg"
     },
     {
       "title": "Peaky Blinders",
-      "authorName": "test name",
+      "authorName": "Steven Knight, Toby Finlay, Stephen Russell",
       "type": 1,
       "img": "assets/imgs/series/peaky-blinders.jpg"
     },
     {
       "title": "Stranger Things",
-      "authorName": "test name",
+      "authorName": "Matt Duffer, Ross Duffer",
       "type": 1,
       "img": "assets/imgs/series/stranger-things.jpg"
     }
