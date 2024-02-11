@@ -2,6 +2,7 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
+import 'package:media_app/src/screens/about.dart';
 import 'package:media_app/src/screens/liked.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -72,6 +73,7 @@ class _MediastoreState extends State<Mediastore> {
                 selectedIndex: switch (state.uri.path) {
                   var p when p.startsWith('/medias') => 0,
                   var p when p.startsWith('/liked') => 1,
+                  var p when p.startsWith('/about') => 2,
                   _ => 0,
                 },
                 child: child,
@@ -135,6 +137,12 @@ class _MediastoreState extends State<Mediastore> {
                     },
                   ),
                 ],
+              ),
+              GoRoute(
+                path: '/about',
+                builder: (context, state) {
+                  return AboutScreen();
+                },
               ),
             ],
           ),

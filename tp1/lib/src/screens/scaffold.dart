@@ -27,6 +27,7 @@ class MediastoreScaffold extends StatelessWidget {
         onDestinationSelected: (idx) {
           if (idx == 0) goRouter.go('/medias');
           if (idx == 1) goRouter.go('/liked');
+          if (idx == 2) goRouter.go('/about');
         },
         destinations: const [
           AdaptiveScaffoldDestination(
@@ -36,6 +37,10 @@ class MediastoreScaffold extends StatelessWidget {
           AdaptiveScaffoldDestination(
             title: 'Favoris',
             icon: Icons.favorite,
+          ),
+          AdaptiveScaffoldDestination(
+            title: 'Infos',
+            icon: Icons.info,
           ),
         ],
       ),
