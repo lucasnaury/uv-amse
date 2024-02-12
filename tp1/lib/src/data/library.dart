@@ -13,6 +13,7 @@ class Library {
     String jsonString = await rootBundle.loadString('assets/medias.json');
     List<dynamic> jsonList = json.decode(jsonString);
 
+    // Parsing the JSON File
     for (var jsonData in jsonList) {
       addMedia(
         title: jsonData['title'],
