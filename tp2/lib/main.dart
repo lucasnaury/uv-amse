@@ -16,6 +16,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'TP2',
       home: Exercice3(),
+      theme: ThemeData(
+        useMaterial3: true,
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blueAccent),
+      ),
     );
   }
 }
