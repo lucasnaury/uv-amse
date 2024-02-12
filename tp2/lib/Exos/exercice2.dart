@@ -26,8 +26,19 @@ class _Exercice2State extends State<Exercice2> {
     Timer.periodic(d, animate);
   }
 
+  @override
+  void dispose() {
+    super.dispose();
+
+    if (timer != null) {
+      timer!.cancel();
+    }
+  }
+
   bool animating = false;
+  Timer? timer;
   void animate(Timer t) {
+    timer = t;
     if (!animating) {
       return;
     }
