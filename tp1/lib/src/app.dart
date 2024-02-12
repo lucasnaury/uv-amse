@@ -45,6 +45,7 @@ class _MediastoreState extends State<Mediastore> {
   }
 
   int mediaIndex = 0;
+  int pageIndex = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -52,7 +53,8 @@ class _MediastoreState extends State<Mediastore> {
       debugShowCheckedModeBanner: false,
       routerConfig: GoRouter(
         debugLogDiagnostics: true,
-        initialLocation: '/medias',
+        initialLocation:
+            pageIndex == 0 ? "/medias" : (pageIndex == 1 ? "/liked" : "about"),
         routes: [
           ShellRoute(
             navigatorKey: appShellNavigatorKey,
@@ -71,6 +73,7 @@ class _MediastoreState extends State<Mediastore> {
               GoRoute(
                 path: '/medias',
                 builder: (context, state) {
+                  pageIndex = 0;
                   return MediasScreen(
                     library: widget.libraryInstance,
                     onTap: (media) =>
@@ -94,6 +97,7 @@ class _MediastoreState extends State<Mediastore> {
               GoRoute(
                 path: '/liked',
                 builder: (context, state) {
+                  pageIndex = 1;
                   return LikedScreen(
                     child: MediaList(
                       medias: widget.libraryInstance.liked,
@@ -119,6 +123,7 @@ class _MediastoreState extends State<Mediastore> {
               GoRoute(
                 path: '/about',
                 builder: (context, state) {
+                  pageIndex = 2;
                   return AboutScreen();
                 },
               ),
