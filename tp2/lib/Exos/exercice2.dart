@@ -43,7 +43,6 @@ class _Exercice2State extends State<Exercice2> {
       return;
     }
 
-    print("TIMER");
     double newRotateXVal = rotateXVal + 3.14 / 60;
     double newRotateZVal = rotateZVal + 3.14 / 60;
     double newScale = scale + 0.01;
@@ -53,8 +52,6 @@ class _Exercice2State extends State<Exercice2> {
       rotateZVal = newRotateZVal > 6.28 ? newRotateZVal - 6.28 : newRotateZVal;
       scale = newScale > 2 ? newScale - (2 - 0.1) : newScale;
     });
-
-    // t.cancel(); // stops the timer
   }
 
   @override
