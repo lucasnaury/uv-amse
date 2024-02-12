@@ -100,7 +100,6 @@ class _MediastoreState extends State<Mediastore> {
                     library: widget.libraryInstance,
                     onTap: (media) =>
                         GoRouter.of(context).push('/medias/info/${media.id}'),
-                    // toggleFavCallback: toggleFav,
                     toggleFavCallback: (id) => toggleFav(id, context),
                   );
                 },
@@ -125,7 +124,6 @@ class _MediastoreState extends State<Mediastore> {
                   return LikedScreen(
                     child: MediaList(
                       medias: widget.libraryInstance.liked,
-                      // toggleFavCallback: toggleFav,
                       toggleFavCallback: (id) => toggleFav(id, context),
                       onTap: (media) =>
                           GoRouter.of(context).push('/liked/info/${media.id}'),
