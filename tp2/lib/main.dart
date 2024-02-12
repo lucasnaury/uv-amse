@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tp2/Exos/Exercice1.dart';
+import 'package:tp2/Exos/exercice1.dart';
 
 void main() {
   runApp(const MyApp());
