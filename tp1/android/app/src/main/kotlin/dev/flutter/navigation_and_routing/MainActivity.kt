@@ -1,4 +1,4 @@
-package dev.flutter.navigation_and_routing
+package dev.flutter.media_app
 
 import io.flutter.embedding.android.FlutterActivity
 
