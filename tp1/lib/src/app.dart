@@ -70,6 +70,7 @@ class _MediastoreState extends State<Mediastore> {
               );
             },
             routes: [
+              // Navigating to the Medias page
               GoRoute(
                 path: '/medias',
                 builder: (context, state) {
@@ -94,6 +95,7 @@ class _MediastoreState extends State<Mediastore> {
                   ),
                 ],
               ),
+              // Navigating to the Liked page
               GoRoute(
                 path: '/liked',
                 builder: (context, state) {
@@ -120,6 +122,7 @@ class _MediastoreState extends State<Mediastore> {
                   ),
                 ],
               ),
+              // Navigating to the About page
               GoRoute(
                 path: '/about',
                 builder: (context, state) {
