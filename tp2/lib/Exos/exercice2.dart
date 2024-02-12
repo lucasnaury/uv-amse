@@ -20,67 +20,76 @@ class _Exercice2State extends State<Exercice2> {
       appBar: AppBar(title: const Text('Slider')),
       body: SingleChildScrollView(
         child: SafeArea(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Image.asset('assets/imgs/taquin.jpg'),
-              Row(
+          child: Center(
+            child: Container(
+              width: 300,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  const Text("RotateX :"),
-                  Slider(
-                    value: rotateXVal,
-                    max: 100,
-                    label: rotateXVal.round().toString(),
-                    onChanged: (double value) {
-                      setState(() {
-                        rotateXVal = value;
-                      });
-                    },
+                  Image.asset('assets/imgs/taquin.jpg'),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text("RotateX :"),
+                      Slider(
+                        value: rotateXVal,
+                        max: 100,
+                        label: rotateXVal.round().toString(),
+                        onChanged: (double value) {
+                          setState(() {
+                            rotateXVal = value;
+                          });
+                        },
+                      ),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text("RotateZ :"),
+                      Slider(
+                        value: rotateZVal,
+                        max: 100,
+                        label: rotateZVal.round().toString(),
+                        onChanged: (double value) {
+                          setState(() {
+                            rotateZVal = value;
+                          });
+                        },
+                      ),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text("Mirror :"),
+                      Checkbox(
+                        value: mirror,
+                        onChanged: (bool? state) => setState(() {
+                          mirror = state!;
+                        }),
+                      )
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text("Scale :"),
+                      Slider(
+                        value: scale,
+                        max: 100,
+                        label: scale.round().toString(),
+                        onChanged: (double value) {
+                          setState(() {
+                            scale = value;
+                          });
+                        },
+                      ),
+                    ],
                   ),
                 ],
               ),
-              Row(
-                children: [
-                  const Text("RotateZ :"),
-                  Slider(
-                    value: rotateZVal,
-                    max: 100,
-                    label: rotateZVal.round().toString(),
-                    onChanged: (double value) {
-                      setState(() {
-                        rotateZVal = value;
-                      });
-                    },
-                  ),
-                ],
-              ),
-              Row(
-                children: [
-                  const Text("Mirror :"),
-                  Checkbox(
-                    value: mirror,
-                    onChanged: (bool? state) => setState(() {
-                      mirror = state!;
-                    }),
-                  )
-                ],
-              ),
-              Row(
-                children: [
-                  const Text("Scale :"),
-                  Slider(
-                    value: scale,
-                    max: 100,
-                    label: scale.round().toString(),
-                    onChanged: (double value) {
-                      setState(() {
-                        scale = value;
-                      });
-                    },
-                  ),
-                ],
-              ),
-            ],
+            ),
           ),
         ),
       ),
