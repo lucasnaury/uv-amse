@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tp2/Exos/exercice1.dart';
 import 'package:tp2/Exos/exercice2.dart';
+import 'package:tp2/Exos/exercice3.dart';
 
 void main() {
   runApp(const MyApp());
@@ -14,7 +15,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return const MaterialApp(
       title: 'TP2',
-      home: Exercice2(),
+      home: Exercice3(),
     );
   }
 }
