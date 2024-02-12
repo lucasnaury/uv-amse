@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import '../data.dart';
 
 class MediaList extends StatefulWidget {
-  List<Media> medias;
+  final List<Media> medias;
   final Function toggleFavCallback;
   final ValueChanged<Media>? onTap;
 
