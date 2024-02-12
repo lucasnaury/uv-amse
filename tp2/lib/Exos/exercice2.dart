@@ -16,6 +16,7 @@ class _Exercice2State extends State<Exercice2> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(title: const Text('Slider')),
       body: SingleChildScrollView(
         child: SafeArea(
