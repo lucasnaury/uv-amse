@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -16,10 +18,39 @@ class _Exercice2State extends State<Exercice2> {
   bool mirror = false;
 
   @override
+  void initState() {
+    super.initState();
+
+    // Initialize animation
+    const d = Duration(milliseconds: 50);
+    Timer.periodic(d, animate);
+  }
+
+  bool animating = false;
+  void animate(Timer t) {
+    if (!animating) {
+      return;
+    }
+
+    print("TIMER");
+    double newRotateXVal = rotateXVal + 3.14 / 60;
+    double newRotateZVal = rotateZVal + 3.14 / 60;
+    double newScale = scale + 0.01;
+
+    setState(() {
+      rotateXVal = newRotateXVal > 6.28 ? newRotateXVal - 6.28 : newRotateXVal;
+      rotateZVal = newRotateZVal > 6.28 ? newRotateZVal - 6.28 : newRotateZVal;
+      scale = newScale > 2 ? newScale - (2 - 0.1) : newScale;
+    });
+
+    // t.cancel(); // stops the timer
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      appBar: AppBar(title: const Text('Slider')),
+      appBar: AppBar(title: const Text('Exercice 2')),
       body: SingleChildScrollView(
         child: SafeArea(
           child: Center(
@@ -105,6 +136,26 @@ class _Exercice2State extends State<Exercice2> {
                 ],
               ),
             ),
+          ),
+        ),
+      ),
+      floatingActionButton: Container(
+        height: 50,
+        width: 50,
+        margin: const EdgeInsets.all(10),
+        child: IconButton(
+          icon: Icon(animating ? Icons.pause : Icons.play_arrow),
+          onPressed: () {
+            setState(() {
+              animating = !animating;
+            });
+          },
+          // style: ,
+          style: ButtonStyle(
+            backgroundColor: MaterialStateProperty.all<Color>(
+                Theme.of(context).colorScheme.primary),
+            iconColor: MaterialStateProperty.all<Color>(
+                Theme.of(context).colorScheme.onPrimary),
           ),
         ),
       ),
