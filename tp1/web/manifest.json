@@ -1,11 +1,11 @@
 {
-    "name": "navigation_and_routing",
-    "short_name": "navigation_and_routing",
+    "name": "Media app",
+    "short_name": "Medias",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
     "theme_color": "#0175C2",
-    "description": "Navigation and routing sample app",
+    "description": "Media app",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [
