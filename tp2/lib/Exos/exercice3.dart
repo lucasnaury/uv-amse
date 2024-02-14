@@ -20,7 +20,7 @@ class Exercice3 extends StatelessWidget {
             child: ListTile(
               leading: const FlutterLogo(size: 56.0),
               title: const Text('Exercice 1'),
-              subtitle: const Text('Here is a second line'),
+              subtitle: const Text("Affichage d'une image"),
               trailing: const Icon(Icons.play_arrow),
               onTap: () => GoRouter.of(context).push('/ex1'),
             ),
@@ -29,8 +29,7 @@ class Exercice3 extends StatelessWidget {
             child: ListTile(
               leading: const FlutterLogo(size: 56.0),
               title: const Text('Exercice 2'),
-              subtitle: const Text(
-                  'A sufficiently long subtitle warrants three lines.'),
+              subtitle: const Text("Rotation, échelle, animation d'une image"),
               trailing: const Icon(Icons.play_arrow),
               onTap: () => GoRouter.of(context).push('/ex2'),
             ),
@@ -39,8 +38,7 @@ class Exercice3 extends StatelessWidget {
             child: ListTile(
               leading: const FlutterLogo(size: 56.0),
               title: const Text('Exercice 4'),
-              subtitle: const Text(
-                  'A sufficiently long subtitle warrants three lines.'),
+              subtitle: const Text("Rogner une image"),
               trailing: const Icon(Icons.play_arrow),
               onTap: () => GoRouter.of(context).push('/ex4'),
             ),
@@ -49,8 +47,7 @@ class Exercice3 extends StatelessWidget {
             child: ListTile(
               leading: const FlutterLogo(size: 56.0),
               title: const Text('Exercice 5'),
-              subtitle: const Text(
-                  'A sufficiently long subtitle warrants three lines.'),
+              subtitle: const Text("Découper une image en grille de tuiles"),
               trailing: const Icon(Icons.play_arrow),
               onTap: () => GoRouter.of(context).push('/ex5'),
             ),
@@ -59,8 +56,7 @@ class Exercice3 extends StatelessWidget {
             child: ListTile(
               leading: const FlutterLogo(size: 56.0),
               title: const Text('Exercice 6'),
-              subtitle: const Text(
-                  'A sufficiently long subtitle warrants three lines.'),
+              subtitle: const Text("Déplacer des tuiles"),
               trailing: const Icon(Icons.play_arrow),
               onTap: () => GoRouter.of(context).push('/ex6'),
             ),
