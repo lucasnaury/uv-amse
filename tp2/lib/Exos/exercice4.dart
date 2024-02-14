@@ -15,7 +15,7 @@ class Tile {
             alignment: alignment,
             widthFactor: 0.3,
             heightFactor: 0.3,
-            child: Image.network(imageURL),
+            child: Image.asset(imageURL),
           ),
         ),
       ),
