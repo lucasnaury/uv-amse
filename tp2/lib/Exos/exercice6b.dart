@@ -60,24 +60,18 @@ class PositionedTilesState extends State<Exercice6b> {
         sameLine && (src == emptyTileIndex - 1 || src == emptyTileIndex + 1);
     bool aboveOrBelow = sameColumn &&
         (src == emptyTileIndex - gridSize || src == emptyTileIndex + gridSize);
-    print(emptyTileIndex.toString() + " ->" + src.toString());
 
+    //Check if valid tile to swap (above, below, left or right)
     if (aboveOrBelow || leftOrRight) {
-      print("SWAP");
-
-      late Widget temp;
       setState(() {
+        //Swap tiles in list
         var temp = tiles[src];
         tiles[src] = tiles[emptyTileIndex];
         tiles[emptyTileIndex] = temp;
 
-        // tiles = [];
-        // temp = tiles.removeAt(src);
-        // tiles.insert(emptyTileIndex, temp);
+        //Update new empty pos
         emptyTileIndex = src;
       });
-    } else {
-      print("NO SWAP");
     }
   }
 
@@ -85,7 +79,7 @@ class PositionedTilesState extends State<Exercice6b> {
     return InkWell(
       child: tile,
       onTap: () {
-        print("tapped on tile");
+        //Try to swap tiles on tap
         swapTiles(index);
       },
     );
@@ -120,7 +114,7 @@ class PositionedTilesState extends State<Exercice6b> {
               alignment: Alignment.topCenter,
               width: 350,
               child:
-                  //Create a grid of the slider size
+                  //Create a grid for the tiles
                   GridView.count(
                       crossAxisSpacing: 5,
                       mainAxisSpacing: 5,
@@ -128,9 +122,7 @@ class PositionedTilesState extends State<Exercice6b> {
                       crossAxisCount: 4,
                       children: tiles.asMap().entries.map((entry) {
                         return createTileWidgetFrom(entry.value, entry.key);
-                      }).toList()
-                      // children: tiles.map((w) => null),
-                      ),
+                      }).toList()),
             ),
           ),
         ),
