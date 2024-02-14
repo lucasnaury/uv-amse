@@ -33,10 +33,11 @@ class TileWidget extends StatelessWidget {
 
   Widget coloredBox() {
     return Container(
-        color: tile.color,
-        child: const Padding(
-          padding: EdgeInsets.all(70.0),
-        ));
+      color: tile.color,
+      child: const Padding(
+        padding: EdgeInsets.all(70.0),
+      ),
+    );
   }
 }
 
@@ -48,8 +49,61 @@ class Exercice6b extends StatefulWidget {
 }
 
 class PositionedTilesState extends State<Exercice6b> {
-  List<Widget> tiles =
-      List<Widget>.generate(2, (index) => TileWidget(Tile.randomColor()));
+  int gridSize = 4;
+  int emptyTileIndex = 6;
+
+  void swapTiles(int src) {
+    bool sameLine = src ~/ gridSize == emptyTileIndex ~/ gridSize;
+    bool sameColumn = src % gridSize == emptyTileIndex % gridSize;
+
+    bool leftOrRight =
+        sameLine && (src == emptyTileIndex - 1 || src == emptyTileIndex + 1);
+    bool aboveOrBelow = sameColumn &&
+        (src == emptyTileIndex - gridSize || src == emptyTileIndex + gridSize);
+    print(emptyTileIndex.toString() + " ->" + src.toString());
+
+    if (aboveOrBelow || leftOrRight) {
+      print("SWAP");
+
+      late Widget temp;
+      setState(() {
+        var temp = tiles[src];
+        tiles[src] = tiles[emptyTileIndex];
+        tiles[emptyTileIndex] = temp;
+
+        // tiles = [];
+        // temp = tiles.removeAt(src);
+        // tiles.insert(emptyTileIndex, temp);
+        emptyTileIndex = src;
+      });
+    } else {
+      print("NO SWAP");
+    }
+  }
+
+  Widget createTileWidgetFrom(TileWidget tile, int index) {
+    return InkWell(
+      child: tile,
+      onTap: () {
+        print("tapped on tile");
+        swapTiles(index);
+      },
+    );
+  }
+
+  List<TileWidget> tiles = [];
+  @override
+  void initState() {
+    super.initState();
+
+    tiles = List<TileWidget>.generate(16, (index) {
+      if (index == 6) {
+        return TileWidget(Tile(Colors.white));
+      }
+
+      return TileWidget(Tile.randomColor());
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -58,16 +112,29 @@ class PositionedTilesState extends State<Exercice6b> {
         title: const Text('Moving Tiles'),
         centerTitle: true,
       ),
-      body: Row(children: tiles),
-      floatingActionButton: FloatingActionButton(
-          onPressed: swapTiles,
-          child: const Icon(Icons.sentiment_very_satisfied)),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(20),
+          child: Center(
+            child: Container(
+              alignment: Alignment.topCenter,
+              width: 350,
+              child:
+                  //Create a grid of the slider size
+                  GridView.count(
+                      crossAxisSpacing: 5,
+                      mainAxisSpacing: 5,
+                      shrinkWrap: true,
+                      crossAxisCount: 4,
+                      children: tiles.asMap().entries.map((entry) {
+                        return createTileWidgetFrom(entry.value, entry.key);
+                      }).toList()
+                      // children: tiles.map((w) => null),
+                      ),
+            ),
+          ),
+        ),
+      ),
     );
-  }
-
-  swapTiles() {
-    setState(() {
-      tiles.insert(1, tiles.removeAt(0));
-    });
   }
 }
