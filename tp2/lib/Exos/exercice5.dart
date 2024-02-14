@@ -22,13 +22,11 @@ class Tile {
     return FittedBox(
       fit: BoxFit.fill,
       child: ClipRect(
-        child: Container(
-          child: Align(
-            alignment: alignment,
-            widthFactor: 1.0 / gridSize,
-            heightFactor: 1.0 / gridSize,
-            child: Image.asset(imageURL),
-          ),
+        child: Align(
+          alignment: alignment,
+          widthFactor: 1.0 / gridSize,
+          heightFactor: 1.0 / gridSize,
+          child: Image.asset(imageURL),
         ),
       ),
     );
