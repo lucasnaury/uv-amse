@@ -24,7 +24,7 @@ class Tile {
 }
 
 Tile tile =
-    Tile(imageURL: 'assets/imgs/taquin.jpg', alignment: const Alignment(0, 0));
+    Tile(imageURL: 'assets/imgs/taquin.jpg', alignment: const Alignment(0, 1));
 
 class Exercice4 extends StatefulWidget {
   @override
