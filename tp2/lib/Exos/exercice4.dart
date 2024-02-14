@@ -13,8 +13,8 @@ class Tile {
         child: Container(
           child: Align(
             alignment: alignment,
-            widthFactor: 0.25,
-            heightFactor: 0.25,
+            widthFactor: 0.3,
+            heightFactor: 0.3,
             child: Image.asset(imageURL),
           ),
         ),
