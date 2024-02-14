@@ -40,14 +40,14 @@ class TileWidget extends StatelessWidget {
   }
 }
 
-class Exercice6 extends StatefulWidget {
-  const Exercice6({super.key});
+class Exercice6b extends StatefulWidget {
+  const Exercice6b({super.key});
 
   @override
   State<StatefulWidget> createState() => PositionedTilesState();
 }
 
-class PositionedTilesState extends State<Exercice6> {
+class PositionedTilesState extends State<Exercice6b> {
   List<Widget> tiles =
       List<Widget>.generate(2, (index) => TileWidget(Tile.randomColor()));
 

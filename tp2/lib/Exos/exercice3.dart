@@ -58,7 +58,16 @@ class Exercice3 extends StatelessWidget {
               title: const Text('Exercice 6'),
               subtitle: const Text("Déplacer des tuiles"),
               trailing: const Icon(Icons.play_arrow),
-              onTap: () => GoRouter.of(context).push('/ex6'),
+              onTap: () => GoRouter.of(context).push('/ex6a'),
+            ),
+          ),
+          Card(
+            child: ListTile(
+              leading: const FlutterLogo(size: 56.0),
+              title: const Text('Exercice 6'),
+              subtitle: const Text("Déplacer des tuiles"),
+              trailing: const Icon(Icons.play_arrow),
+              onTap: () => GoRouter.of(context).push('/ex6b'),
             ),
           ),
         ],

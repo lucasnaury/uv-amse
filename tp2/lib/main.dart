@@ -6,6 +6,7 @@ import 'package:tp2/Exos/exercice3.dart';
 import 'package:tp2/Exos/exercice4.dart';
 import 'package:tp2/Exos/exercice5.dart';
 import 'package:tp2/Exos/exercice6a.dart';
+import 'package:tp2/Exos/exercice6b.dart';
 
 void main() {
   runApp(const MyApp());
@@ -47,8 +48,12 @@ class MyApp extends StatelessWidget {
             builder: (context, state) => const Exercice5(),
           ),
           GoRoute(
-            path: '/ex6',
+            path: '/ex6a',
             builder: (context, state) => const Exercice6a(),
+          ),
+          GoRoute(
+            path: '/ex6b',
+            builder: (context, state) => const Exercice6b(),
           )
         ],
       ),
