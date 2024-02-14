@@ -13,7 +13,12 @@ class Exercice3 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Liste Exercice')),
+      appBar: AppBar(
+        backgroundColor: Theme.of(context).primaryColor,
+        foregroundColor: Theme.of(context).colorScheme.onPrimary,
+        title: const Text('Liste des exercices'),
+        centerTitle: true,
+      ),
       body: ListView(
         children: <Widget>[
           Card(
@@ -69,6 +74,15 @@ class Exercice3 extends StatelessWidget {
                   const Text("Déplacer des tuiles dans une grille complète"),
               trailing: const Icon(Icons.play_arrow),
               onTap: () => GoRouter.of(context).push('/ex6b'),
+            ),
+          ),
+          Card(
+            child: ListTile(
+              leading: Image.asset("assets/imgs/taquin-icon.jpg"),
+              title: const Text('Taquin'),
+              subtitle: const Text("Jeu du taquin, exercice final"),
+              trailing: const Icon(Icons.play_arrow),
+              onTap: () => GoRouter.of(context).push('/taquin'),
             ),
           ),
         ],

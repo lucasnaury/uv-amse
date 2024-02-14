@@ -103,7 +103,9 @@ class PositionedTilesState extends State<Exercice6b> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Moving Tiles'),
+        backgroundColor: Theme.of(context).primaryColor,
+        foregroundColor: Theme.of(context).colorScheme.onPrimary,
+        title: const Text('Exercice 6b'),
         centerTitle: true,
       ),
       body: SafeArea(

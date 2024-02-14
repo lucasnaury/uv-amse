@@ -25,6 +25,8 @@ Tile tile =
     Tile(imageURL: 'assets/imgs/taquin.jpg', alignment: const Alignment(0, 1));
 
 class Exercice4 extends StatefulWidget {
+  const Exercice4({super.key});
+
   @override
   State<Exercice4> createState() => _DisplayTileWidgetState();
 }
@@ -34,7 +36,9 @@ class _DisplayTileWidgetState extends State<Exercice4> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Display a Tile as a Cropped Image'),
+        backgroundColor: Theme.of(context).primaryColor,
+        foregroundColor: Theme.of(context).colorScheme.onPrimary,
+        title: const Text('Exercice 4'),
         centerTitle: true,
       ),
       body: Center(

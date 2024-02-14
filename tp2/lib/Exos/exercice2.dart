@@ -58,7 +58,12 @@ class _Exercice2State extends State<Exercice2> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      appBar: AppBar(title: const Text('Exercice 2')),
+      appBar: AppBar(
+        backgroundColor: Theme.of(context).primaryColor,
+        foregroundColor: Theme.of(context).colorScheme.onPrimary,
+        title: const Text('Exercice 2'),
+        centerTitle: true,
+      ),
       body: SingleChildScrollView(
         child: SafeArea(
           child: Center(

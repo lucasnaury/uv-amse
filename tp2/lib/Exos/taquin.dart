@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class Exercice1 extends StatelessWidget {
-  const Exercice1({super.key});
+class Taquin extends StatelessWidget {
+  const Taquin({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -9,7 +9,7 @@ class Exercice1 extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Theme.of(context).primaryColor,
         foregroundColor: Theme.of(context).colorScheme.onPrimary,
-        title: const Text('Exercice 1'),
+        title: const Text('Taquin'),
         centerTitle: true,
       ),
       body: SafeArea(
