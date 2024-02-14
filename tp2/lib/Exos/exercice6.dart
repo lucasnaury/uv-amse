@@ -5,10 +5,10 @@ import 'dart:math' as math;
 // Models
 // ==============
 
-math.Random random = new math.Random();
+math.Random random = math.Random();
 
 class Tile {
-  Color color;
+  late Color color;
 
   Tile(this.color);
   Tile.randomColor() {
@@ -24,30 +24,32 @@ class Tile {
 class TileWidget extends StatelessWidget {
   final Tile tile;
 
-  TileWidget(this.tile);
+  const TileWidget(this.tile, {super.key});
 
   @override
   Widget build(BuildContext context) {
-    return this.coloredBox();
+    return coloredBox();
   }
 
   Widget coloredBox() {
     return Container(
         color: tile.color,
-        child: Padding(
+        child: const Padding(
           padding: EdgeInsets.all(70.0),
         ));
   }
 }
 
-void main() => runApp(new MaterialApp(home: PositionedTiles()));
+// void main() => runApp(const MaterialApp(home: PositionedTiles()));
 
-class PositionedTiles extends StatefulWidget {
+class Exercice6 extends StatefulWidget {
+  const Exercice6({super.key});
+
   @override
   State<StatefulWidget> createState() => PositionedTilesState();
 }
 
-class PositionedTilesState extends State<PositionedTiles> {
+class PositionedTilesState extends State<Exercice6> {
   List<Widget> tiles =
       List<Widget>.generate(2, (index) => TileWidget(Tile.randomColor()));
 
@@ -55,12 +57,13 @@ class PositionedTilesState extends State<PositionedTiles> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Moving Tiles'),
+        title: const Text('Moving Tiles'),
         centerTitle: true,
       ),
       body: Row(children: tiles),
       floatingActionButton: FloatingActionButton(
-          child: Icon(Icons.sentiment_very_satisfied), onPressed: swapTiles),
+          onPressed: swapTiles,
+          child: const Icon(Icons.sentiment_very_satisfied)),
     );
   }
 
