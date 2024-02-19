@@ -80,8 +80,40 @@ class PositionedTilesState extends State<Taquin> {
 
         //Update new empty pos
         emptyTileIndex = src;
+
+        // Check for victory
+        if (checkVictory()) {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: const Text('Victoire !'),
+                content: const Text('Félicitations, vous avez gagné !'),
+                actions: <Widget>[
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: const Text('OK'),
+                  ),
+                ],
+              );
+            },
+          );
+        }
       });
     }
+  }
+
+  bool checkVictory() {
+    for (int i = 0; i < tiles.length; i++) {
+      if (tiles[i].alignment !=
+          Alignment(-1 + (2 / (gridSize - 1)) * (i % gridSize),
+              -1 + (2 / (gridSize - 1)) * (i ~/ gridSize))) {
+        return false;
+      }
+    }
+    return true;
   }
 
   @override
