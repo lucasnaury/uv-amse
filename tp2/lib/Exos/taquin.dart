@@ -55,18 +55,19 @@ class PositionedTilesState extends State<Taquin> {
 
   int gridSize = 4;
   late int emptyTileIndex;
+  late int nbMelange;
 
   void swapTiles(int src) {
-    bool sameLine = src ~/ gridSize == emptyTileIndex ~/ gridSize;
-    bool sameColumn = src % gridSize == emptyTileIndex % gridSize;
+    // bool sameLine = src ~/ gridSize == emptyTileIndex ~/ gridSize;
+    // bool sameColumn = src % gridSize == emptyTileIndex % gridSize;
 
-    bool leftOrRight =
-        sameLine && (src == emptyTileIndex - 1 || src == emptyTileIndex + 1);
-    bool aboveOrBelow = sameColumn &&
-        (src == emptyTileIndex - gridSize || src == emptyTileIndex + gridSize);
+    // bool leftOrRight =
+    //     sameLine && (src == emptyTileIndex - 1 || src == emptyTileIndex + 1);
+    // bool aboveOrBelow = sameColumn &&
+    //     (src == emptyTileIndex - gridSize || src == emptyTileIndex + gridSize);
 
     //Check if valid tile to swap (above, below, left or right)
-    if (aboveOrBelow || leftOrRight) {
+    if (isAdjacent(src)) {
       setState(() {
         //Swap tiles in list
         var temp = tiles[src];
@@ -84,7 +85,7 @@ class PositionedTilesState extends State<Taquin> {
     super.initState();
 
     updateTiles();
-    melange();
+    newGame();
   }
 
   void updateTiles() {
@@ -105,13 +106,35 @@ class PositionedTilesState extends State<Taquin> {
     }
   }
 
-  void melange() {
+  void newGame() {
     //Decide empty square
     emptyTileIndex = random.nextInt(gridSize * gridSize);
 
     tiles[emptyTileIndex].empty = true;
 
+    nbMelange = gridSize * gridSize + random.nextInt(gridSize);
+
+    for (int i = 0; i < nbMelange; i++) {
+      var listAdjacent = [];
+      for (int tile = 0; tile < 16; tile++) {
+        if (isAdjacent(tile)) {
+          listAdjacent.add(tile);
+        }
+      }
+      swapTiles(random.nextInt(listAdjacent.length));
+    }
     //Swap random tiles
+  }
+
+  bool isAdjacent(int src) {
+    bool sameLine = src ~/ gridSize == emptyTileIndex ~/ gridSize;
+    bool sameColumn = src % gridSize == emptyTileIndex % gridSize;
+
+    bool leftOrRight =
+        sameLine && (src == emptyTileIndex - 1 || src == emptyTileIndex + 1);
+    bool aboveOrBelow = sameColumn &&
+        (src == emptyTileIndex - gridSize || src == emptyTileIndex + gridSize);
+    return (aboveOrBelow || leftOrRight);
   }
 
   Widget createTileWidgetFrom(Tile tile, int index) {
