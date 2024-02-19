@@ -1,5 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
+import 'dart:async'; // Importer le package 'dart:async' pour utiliser le chronomètre
 
 import 'package:flutter/widgets.dart';
 
@@ -59,6 +61,10 @@ class PositionedTilesState extends State<Taquin> {
   int nbMelange = 4 * 4;
   late int emptyTileIndex;
   bool playing = false;
+
+  late Stopwatch _stopwatch;
+  late Timer _timer;
+  String _elapsedTime = "0:00";
 
   void swapTiles(int src) {
     if (!playing) {
@@ -122,6 +128,29 @@ class PositionedTilesState extends State<Taquin> {
     super.initState();
 
     updateTiles();
+    _stopwatch = Stopwatch();
+    _timer = Timer.periodic(const Duration(seconds: 1), (_) {
+      if (_stopwatch.isRunning) {
+        setState(() {
+          _elapsedTime = formatTime(_stopwatch.elapsed);
+        });
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _stopwatch.stop();
+    super.dispose();
+
+    _timer.cancel();
+  }
+
+  String formatTime(Duration duration) {
+    String twoDigits(int n) => n.toString().padLeft(2, '0');
+    String twoDigitMinutes = duration.inMinutes.toString();
+    String twoDigitSeconds = twoDigits(duration.inSeconds.remainder(60));
+    return '$twoDigitMinutes:$twoDigitSeconds';
   }
 
   void updateTiles() {
@@ -163,6 +192,8 @@ class PositionedTilesState extends State<Taquin> {
   }
 
   void restart() {
+    _stopwatch.reset();
+    _elapsedTime = '0:00';
     setState(() {
       playing = false;
       updateTiles();
@@ -273,6 +304,13 @@ class PositionedTilesState extends State<Taquin> {
                       ],
                     ),
                   ),
+                  Visibility(
+                    visible: playing,
+                    child: Text(
+                      'Temps écoulé: $_elapsedTime',
+                      style: const TextStyle(fontSize: 20),
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -292,8 +330,11 @@ class PositionedTilesState extends State<Taquin> {
               //Do action
               if (playing) {
                 newGame();
+                _stopwatch.reset();
+                _stopwatch.start();
               } else {
                 restart();
+                _stopwatch.stop();
               }
             });
           },
