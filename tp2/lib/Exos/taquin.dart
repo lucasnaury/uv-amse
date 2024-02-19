@@ -114,6 +114,10 @@ class PositionedTilesState extends State<Taquin> {
               );
             },
           );
+
+          //Pause timer
+          _stopwatch.stop();
+          _timer.cancel();
         }
       });
     }
