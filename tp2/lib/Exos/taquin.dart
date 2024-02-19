@@ -115,18 +115,18 @@ class PositionedTilesState extends State<Taquin> {
 
     tiles[emptyTileIndex].empty = true;
 
-    nbMelange = gridSize * gridSize + random.nextInt(gridSize);
+    //Swap random tiles
+    nbMelange = gridSize * gridSize + random.nextInt(gridSize * gridSize);
 
     for (int i = 0; i < nbMelange; i++) {
       var listAdjacent = [];
-      for (int tile = 0; tile < 16; tile++) {
+      for (int tile = 0; tile < gridSize * gridSize; tile++) {
         if (isAdjacent(tile)) {
           listAdjacent.add(tile);
         }
       }
-      swapTiles(random.nextInt(listAdjacent.length));
+      swapTiles(listAdjacent[random.nextInt(listAdjacent.length)]);
     }
-    //Swap random tiles
   }
 
   bool isAdjacent(int src) {
