@@ -129,6 +129,10 @@ class PositionedTilesState extends State<Taquin> {
     }
   }
 
+  void restart() {
+    initState();
+  }
+
   bool isAdjacent(int src) {
     bool sameLine = src ~/ gridSize == emptyTileIndex ~/ gridSize;
     bool sameColumn = src % gridSize == emptyTileIndex % gridSize;
@@ -207,27 +211,30 @@ class PositionedTilesState extends State<Taquin> {
           ),
         ),
       ),
-      floatingActionButton: Visibility(
-        visible: !playing,
-        child: Container(
-          height: 50,
-          width: 50,
-          margin: const EdgeInsets.all(10),
-          child: IconButton(
-            icon: const Icon(Icons.play_arrow),
-            onPressed: () {
-              setState(() {
-                playing = true;
+      floatingActionButton: Container(
+        height: 50,
+        width: 50,
+        margin: const EdgeInsets.all(10),
+        child: IconButton(
+          icon: Icon(playing ? Icons.replay : Icons.play_arrow),
+          onPressed: () {
+            setState(() {
+              //Toggle play state
+              playing = !playing;
+              //Do action
+              if (playing) {
                 newGame();
-              });
-            },
-            // style: ,
-            style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.all<Color>(
-                  Theme.of(context).colorScheme.primary),
-              iconColor: MaterialStateProperty.all<Color>(
-                  Theme.of(context).colorScheme.onPrimary),
-            ),
+              } else {
+                restart();
+              }
+            });
+          },
+          // style: ,
+          style: ButtonStyle(
+            backgroundColor: MaterialStateProperty.all<Color>(
+                Theme.of(context).colorScheme.primary),
+            iconColor: MaterialStateProperty.all<Color>(
+                Theme.of(context).colorScheme.onPrimary),
           ),
         ),
       ),

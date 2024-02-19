@@ -19,7 +19,6 @@ samples, guidance on mobile development, and a full API reference.
 ## TO-DO
 - Ecran de victoire
 - Compteur
-- Bt restart
 - Chrono
 - Retour en arrière
 - Choix de la difficulté
