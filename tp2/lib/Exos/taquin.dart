@@ -60,13 +60,15 @@ class PositionedTilesState extends State<Taquin> {
   int gridSize = 4;
   int nbMelange = 4 * 4;
   late int emptyTileIndex;
+
   bool playing = false;
+  int nbCoups = 0;
 
   late Stopwatch _stopwatch;
   late Timer _timer;
   String _elapsedTime = "0:00";
 
-  void swapTiles(int src) {
+  void swapTiles(int src, {bool userAction = true}) {
     if (!playing) {
       const snackBar = SnackBar(
         content: Text('Appuyez sur PLAY pour commencer'),
@@ -86,6 +88,11 @@ class PositionedTilesState extends State<Taquin> {
 
         //Update new empty pos
         emptyTileIndex = src;
+
+        //Update count
+        if (userAction) {
+          nbCoups++;
+        }
 
         // Check for victory
         if (checkVictory()) {
@@ -187,7 +194,8 @@ class PositionedTilesState extends State<Taquin> {
         }
       }
       //Swap empty tile with any adjacent tile
-      swapTiles(listAdjacent[random.nextInt(listAdjacent.length)]);
+      swapTiles(listAdjacent[random.nextInt(listAdjacent.length)],
+          userAction: false);
     }
   }
 
@@ -195,7 +203,11 @@ class PositionedTilesState extends State<Taquin> {
     _stopwatch.reset();
     _elapsedTime = '0:00';
     setState(() {
+      //Reset variables
       playing = false;
+      nbCoups = 0;
+
+      //Recreate base grid
       updateTiles();
     });
   }
@@ -302,6 +314,20 @@ class PositionedTilesState extends State<Taquin> {
                           ),
                         ),
                       ],
+                    ),
+                  ),
+                  Visibility(
+                    visible: playing,
+                    child: Container(
+                      margin: const EdgeInsets.only(top: 20),
+                      child: Text(
+                        nbCoups.toString(),
+                        style: Theme.of(context)
+                            .textTheme
+                            .displayMedium!
+                            .copyWith(
+                                color: Theme.of(context).colorScheme.primary),
+                      ),
                     ),
                   ),
                   Visibility(

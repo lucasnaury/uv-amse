@@ -17,10 +17,7 @@ samples, guidance on mobile development, and a full API reference.
 
 
 ## TO-DO
-- Ecran de victoire
-- Compteur
 - Chrono
 - Retour en arrière
-- Choix de la difficulté
 - Image prenable via une camera (choix)
 - Solveur avec nb de coups théoriques
