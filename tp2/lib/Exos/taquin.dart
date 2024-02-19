@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
 
+import 'package:flutter/widgets.dart';
+
 // ==============
 // Models
 // ==============
@@ -55,8 +57,18 @@ class PositionedTilesState extends State<Taquin> {
 
   int gridSize = 4;
   late int emptyTileIndex;
+  bool playing = false;
 
   void swapTiles(int src) {
+    if (!playing) {
+      const snackBar = SnackBar(
+        content: Text('Appuyez sur PLAY pour commencer'),
+        duration: Duration(milliseconds: 500),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      return;
+    }
+
     bool sameLine = src ~/ gridSize == emptyTileIndex ~/ gridSize;
     bool sameColumn = src % gridSize == emptyTileIndex % gridSize;
 
@@ -84,7 +96,6 @@ class PositionedTilesState extends State<Taquin> {
     super.initState();
 
     updateTiles();
-    melange();
   }
 
   void updateTiles() {
@@ -142,14 +153,65 @@ class PositionedTilesState extends State<Taquin> {
               width: 350,
               child:
                   //Create a grid for the tiles
+                  Column(
+                children: [
                   GridView.count(
                       crossAxisSpacing: 5,
                       mainAxisSpacing: 5,
                       shrinkWrap: true,
-                      crossAxisCount: 4,
+                      crossAxisCount: gridSize,
                       children: tiles.asMap().entries.map((entry) {
                         return createTileWidgetFrom(entry.value, entry.key);
                       }).toList()),
+                  Visibility(
+                    visible: !playing,
+                    child: Row(
+                      children: [
+                        const Text("Size : "),
+                        Expanded(
+                          child: Slider(
+                            value: gridSize.toDouble(),
+                            min: 2,
+                            max: 6,
+                            divisions: 4,
+                            label: gridSize.round().toString(),
+                            onChanged: (double value) {
+                              setState(() {
+                                gridSize = value.round();
+                                updateTiles();
+                              });
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+      floatingActionButton: Visibility(
+        visible: !playing,
+        child: Container(
+          height: 50,
+          width: 50,
+          margin: const EdgeInsets.all(10),
+          child: IconButton(
+            icon: const Icon(Icons.play_arrow),
+            onPressed: () {
+              setState(() {
+                playing = true;
+                melange();
+              });
+            },
+            // style: ,
+            style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all<Color>(
+                  Theme.of(context).colorScheme.primary),
+              iconColor: MaterialStateProperty.all<Color>(
+                  Theme.of(context).colorScheme.onPrimary),
             ),
           ),
         ),
