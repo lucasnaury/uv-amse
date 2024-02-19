@@ -11,25 +11,31 @@ class Tile {
   String imageURL;
   Alignment alignment;
   int gridSize;
+  bool empty;
 
   Tile(
       {required this.imageURL,
       required this.gridSize,
-      required this.alignment});
+      required this.alignment,
+      this.empty = false});
 
   //Create a cropped image tile
   Widget croppedImageTile() {
-    return FittedBox(
-      fit: BoxFit.fill,
-      child: ClipRect(
-        child: Align(
-          alignment: alignment,
-          widthFactor: 1.0 / gridSize,
-          heightFactor: 1.0 / gridSize,
-          child: Image.asset(imageURL),
+    if (!empty) {
+      return FittedBox(
+        fit: BoxFit.fill,
+        child: ClipRect(
+          child: Align(
+            alignment: alignment,
+            widthFactor: 1.0 / gridSize,
+            heightFactor: 1.0 / gridSize,
+            child: Image.asset(imageURL),
+          ),
         ),
-      ),
-    );
+      );
+    } else {
+      return Container();
+    }
   }
 }
 
