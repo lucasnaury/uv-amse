@@ -21,7 +21,7 @@ class Exercice3 extends StatelessWidget {
         children: <Widget>[
           Card(
             child: ListTile(
-              leading: const FlutterLogo(size: 56.0),
+              leading: const Icon(Icons.looks_one, size: 40),
               title: const Text('Exercice 1'),
               subtitle: const Text("Affichage d'une image"),
               trailing: const Icon(Icons.play_arrow),
@@ -30,7 +30,7 @@ class Exercice3 extends StatelessWidget {
           ),
           Card(
             child: ListTile(
-              leading: const FlutterLogo(size: 56.0),
+              leading: const Icon(Icons.looks_two, size: 40),
               title: const Text('Exercice 2'),
               subtitle: const Text("Rotation, échelle, animation d'une image"),
               trailing: const Icon(Icons.play_arrow),
@@ -39,7 +39,7 @@ class Exercice3 extends StatelessWidget {
           ),
           Card(
             child: ListTile(
-              leading: const FlutterLogo(size: 56.0),
+              leading: const Icon(Icons.looks_4, size: 40),
               title: const Text('Exercice 4'),
               subtitle: const Text("Rogner une image"),
               trailing: const Icon(Icons.play_arrow),
@@ -48,7 +48,7 @@ class Exercice3 extends StatelessWidget {
           ),
           Card(
             child: ListTile(
-              leading: const FlutterLogo(size: 56.0),
+              leading: const Icon(Icons.looks_5, size: 40),
               title: const Text('Exercice 5'),
               subtitle: const Text("Découper une image en grille de tuiles"),
               trailing: const Icon(Icons.play_arrow),
@@ -57,7 +57,7 @@ class Exercice3 extends StatelessWidget {
           ),
           Card(
             child: ListTile(
-              leading: const FlutterLogo(size: 56.0),
+              leading: const Icon(Icons.looks_6, size: 40),
               title: const Text('Exercice 6a'),
               subtitle: const Text("Déplacer des tuiles"),
               trailing: const Icon(Icons.play_arrow),
@@ -66,7 +66,7 @@ class Exercice3 extends StatelessWidget {
           ),
           Card(
             child: ListTile(
-              leading: const FlutterLogo(size: 56.0),
+              leading: const Icon(Icons.looks_6, size: 40),
               title: const Text('Exercice 6b'),
               subtitle:
                   const Text("Déplacer des tuiles dans une grille complète"),
@@ -76,7 +76,7 @@ class Exercice3 extends StatelessWidget {
           ),
           Card(
             child: ListTile(
-              leading: Image.asset("assets/imgs/taquin-icon.jpg"),
+              leading: Image.asset("assets/imgs/taquin-icon.jpg", width: 40),
               title: const Text('Taquin'),
               subtitle: const Text("Jeu du taquin, exercice final"),
               trailing: const Icon(Icons.play_arrow),
