@@ -100,6 +100,7 @@ class PositionedTilesState extends State<Taquin> {
                   TextButton(
                     onPressed: () {
                       Navigator.of(context).pop();
+                      restart();
                     },
                     child: const Text('OK'),
                   ),
