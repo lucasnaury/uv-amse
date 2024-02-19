@@ -17,7 +17,6 @@ samples, guidance on mobile development, and a full API reference.
 
 
 ## TO-DO
-- Chrono
 - Retour en arrière
 - Image prenable via une camera (choix)
 - Solveur avec nb de coups théoriques
