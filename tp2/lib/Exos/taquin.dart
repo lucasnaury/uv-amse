@@ -54,7 +54,7 @@ class PositionedTilesState extends State<Taquin> {
   List<Tile> tiles = [];
 
   int gridSize = 4;
-  int emptyTileIndex = 6;
+  late int emptyTileIndex;
 
   void swapTiles(int src) {
     bool sameLine = src ~/ gridSize == emptyTileIndex ~/ gridSize;
@@ -84,6 +84,7 @@ class PositionedTilesState extends State<Taquin> {
     super.initState();
 
     updateTiles();
+    melange();
   }
 
   void updateTiles() {
@@ -102,6 +103,15 @@ class PositionedTilesState extends State<Taquin> {
         );
       }
     }
+  }
+
+  void melange() {
+    //Decide empty square
+    emptyTileIndex = random.nextInt(gridSize * gridSize);
+
+    tiles[emptyTileIndex].empty = true;
+
+    //Swap random tiles
   }
 
   Widget createTileWidgetFrom(Tile tile, int index) {
