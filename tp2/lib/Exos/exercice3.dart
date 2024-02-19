@@ -5,8 +5,6 @@ import 'package:tp2/Exos/exercice2.dart';
 
 /// Flutter code sample for [ListTile].
 
-void main() => runApp(const Exercice3());
-
 class Exercice3 extends StatelessWidget {
   const Exercice3({super.key});
 
