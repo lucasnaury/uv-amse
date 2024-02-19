@@ -56,9 +56,9 @@ class PositionedTilesState extends State<Taquin> {
   List<Tile> tiles = [];
 
   int gridSize = 4;
+  int nbMelange = 4 * 4;
   late int emptyTileIndex;
   bool playing = false;
-  late int nbMelange;
 
   void swapTiles(int src) {
     if (!playing) {
@@ -148,21 +148,24 @@ class PositionedTilesState extends State<Taquin> {
     tiles[emptyTileIndex].empty = true;
 
     //Swap random tiles
-    nbMelange = gridSize * gridSize + random.nextInt(gridSize * gridSize);
-
     for (int i = 0; i < nbMelange; i++) {
+      //Get all adjacent tiles
       var listAdjacent = [];
       for (int tile = 0; tile < gridSize * gridSize; tile++) {
         if (isAdjacent(tile)) {
           listAdjacent.add(tile);
         }
       }
+      //Swap empty tile with any adjacent tile
       swapTiles(listAdjacent[random.nextInt(listAdjacent.length)]);
     }
   }
 
   void restart() {
-    initState();
+    setState(() {
+      playing = false;
+      updateTiles();
+    });
   }
 
   bool isAdjacent(int src) {
@@ -173,6 +176,7 @@ class PositionedTilesState extends State<Taquin> {
         sameLine && (src == emptyTileIndex - 1 || src == emptyTileIndex + 1);
     bool aboveOrBelow = sameColumn &&
         (src == emptyTileIndex - gridSize || src == emptyTileIndex + gridSize);
+
     return (aboveOrBelow || leftOrRight);
   }
 
@@ -228,8 +232,39 @@ class PositionedTilesState extends State<Taquin> {
                             label: gridSize.round().toString(),
                             onChanged: (double value) {
                               setState(() {
+                                //Update params
                                 gridSize = value.round();
+                                if (nbMelange < gridSize * gridSize) {
+                                  nbMelange = gridSize * gridSize;
+                                } else if (nbMelange >
+                                    gridSize * gridSize * 2) {
+                                  nbMelange = gridSize * gridSize * 2;
+                                }
+
+                                //Regenerate grid
                                 updateTiles();
+                              });
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Visibility(
+                    visible: !playing,
+                    child: Row(
+                      children: [
+                        const Text("Difficulty : "),
+                        Expanded(
+                          child: Slider(
+                            value: nbMelange.toDouble(),
+                            min: (gridSize * gridSize).toDouble(),
+                            max: (gridSize * gridSize * 2).toDouble(),
+                            divisions: (gridSize * gridSize),
+                            label: nbMelange.round().toString(),
+                            onChanged: (double value) {
+                              setState(() {
+                                nbMelange = value.round();
                               });
                             },
                           ),
