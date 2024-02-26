@@ -1,11 +1,9 @@
 import 'dart:io';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
 import 'dart:async'; // Importer le package 'dart:async' pour utiliser le chronomètre
 
-import 'package:flutter/widgets.dart';
 import 'package:image_picker/image_picker.dart';
 
 // ==============
@@ -65,7 +63,7 @@ class PositionedTilesState extends State<Taquin> {
   int gridSize = 4;
   int nbMelange = 4 * 4;
   late int emptyTileIndex;
-  int previousEmptyTileIndex = -1;
+  List<int> previousEmptyTileIndexes = [];
 
   bool playing = false;
   int nbCoups = 0;
@@ -96,10 +94,13 @@ class PositionedTilesState extends State<Taquin> {
         tiles[src] = tiles[emptyTileIndex];
         tiles[emptyTileIndex] = temp;
 
-        //Update new empty pos
-        if (userAction) {
-          previousEmptyTileIndex = emptyTileIndex;
+        //Save undo actions
+        previousEmptyTileIndexes.add(emptyTileIndex);
+        //Max 5 undo actions
+        while (previousEmptyTileIndexes.length > 5) {
+          previousEmptyTileIndexes.removeAt(0);
         }
+        //Update new empty pos
         emptyTileIndex = src;
 
         //Update count
@@ -139,16 +140,17 @@ class PositionedTilesState extends State<Taquin> {
 
   void undoAction() {
     //Make sure we can undo
-    if (previousEmptyTileIndex == -1) {
+    if (emptyTileIndex == -1) {
       return;
     }
 
     //Undo action
-    swapTiles(previousEmptyTileIndex, userAction: false);
+    swapTiles(previousEmptyTileIndexes[previousEmptyTileIndexes.length - 1],
+        userAction: false);
     nbCoups--;
 
     //Reset history
-    previousEmptyTileIndex = -1;
+    previousEmptyTileIndexes.removeLast();
   }
 
   bool checkVictory() {
@@ -243,18 +245,26 @@ class PositionedTilesState extends State<Taquin> {
     //Swap random tiles
     do {
       for (int i = 0; i < nbMelange; i++) {
-        //Get all adjacent tiles
+        //Get previous empty tile
+        int previousTile = previousEmptyTileIndexes.isNotEmpty
+            ? previousEmptyTileIndexes.last
+            : -1;
+
+        //Get adjacent tiles that are not the previous one
         var listAdjacent = [];
         for (int tile = 0; tile < gridSize * gridSize; tile++) {
-          if (isAdjacent(tile)) {
+          if (isAdjacent(tile) && tile != previousTile) {
             listAdjacent.add(tile);
           }
         }
-        //Swap empty tile with any adjacent tile
-        swapTiles(listAdjacent[random.nextInt(listAdjacent.length)],
-            userAction: false);
+        //Swap empty tile with any adjacent tile (that's not the previous one)
+        int randomTileIndex = listAdjacent[random.nextInt(listAdjacent.length)];
+        swapTiles(randomTileIndex, userAction: false);
       }
     } while (checkVictory()); //Swap tiles until the map is not already finished
+
+    //Reset undo actions
+    previousEmptyTileIndexes = [];
   }
 
   void restart() {
@@ -439,9 +449,9 @@ class PositionedTilesState extends State<Taquin> {
               margin: const EdgeInsets.all(10),
               child: IconButton(
                 icon: const Icon(Icons.undo),
-                onPressed: previousEmptyTileIndex == -1 ? null : undoAction,
+                onPressed: previousEmptyTileIndexes.isEmpty ? null : undoAction,
                 style: ButtonStyle(
-                  backgroundColor: previousEmptyTileIndex == -1
+                  backgroundColor: previousEmptyTileIndexes.isEmpty
                       ? MaterialStateProperty.all<Color>(Colors.grey)
                       : MaterialStateProperty.all<Color>(
                           Theme.of(context).colorScheme.primary),
