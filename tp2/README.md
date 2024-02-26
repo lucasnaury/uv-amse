@@ -1,6 +1,6 @@
 # tp2-Taquin
 
-Here is our version of the Taquin game, a brain teaser.
+Here is our version of the Taquin game, our brain teaser by L.Naury and N.Kulkarni.
 
 ## The Game
 
