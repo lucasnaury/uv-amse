@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:tp2/Exos/exercice1.dart';
-import 'package:tp2/Exos/exercice2.dart';
 
 /// Flutter code sample for [ListTile].
 
