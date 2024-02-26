@@ -1,22 +1,30 @@
-# tp2
+# tp2-Taquin
 
-A new Flutter project.
+Here is our version of the Taquin game, a brain teaser.
 
-## Getting Started
+## The Game
 
-This project is a starting point for a Flutter application.
+### The goal
 
-A few resources to get you started if this is your first Flutter project:
+The goal is to build back the image after being shuffled, by moving tiles around and swaping a empty tile with regulare tiles so that at the end, the image no longer looks like a Picasso painting.
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+### The rules
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+You can can swap the empty tile with a regular one only if they share a side. They aren't any time or move limits.
+The difficulty and number of tiles can be set by setting the slider to the wanted difficulty. One ***undo*** will be available after each move which will cancel the last move and remove 1 move from the counter.
+
+### Start playing
+
+After having selected the number of tiles and difficulty, you can start playing by clicking on the tile you want to swap the empty tile with. The stopwatch will automatically start. Should you want to restart a game, you cand do so by clicking on the restart button on the botton side of the screen. Once the taquin is completed, a pop up message will appear, informing you of your victory. The stopwatch will automaticaly stop, and you can start again by clicking on the restart button.
 
 
-## TO-DO
-- Retour en arrière
-- Image prenable via une camera (choix)
-- Solveur avec nb de coups théoriques
+## Added functionalities (For Pr.Fabresse's eyes only)
+
+Here is a non exhaustive list of the non-required functionnalities we have created:
+- Stopwatch
+- Number of moves
+- Undo Button
+- Restart button
+- End-of-game pop up
+- Choice of the difficulty
+- Choice of the image
