@@ -1,9 +1,12 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
 import 'dart:async'; // Importer le package 'dart:async' pour utiliser le chronomètre
 
 import 'package:flutter/widgets.dart';
+import 'package:image_picker/image_picker.dart';
 
 // ==============
 // Models
@@ -12,14 +15,14 @@ import 'package:flutter/widgets.dart';
 math.Random random = math.Random();
 
 class Tile {
-  String imageURL;
+  Image image;
   Alignment alignment;
   int gridSize;
   bool empty;
   List<int> originalPos;
 
   Tile(
-      {required this.imageURL,
+      {required this.image,
       required this.gridSize,
       required this.alignment,
       required this.originalPos,
@@ -35,7 +38,7 @@ class Tile {
             alignment: alignment,
             widthFactor: 1.0 / gridSize,
             heightFactor: 1.0 / gridSize,
-            child: Image.asset(imageURL),
+            child: image,
           ),
         ),
       );
@@ -70,6 +73,10 @@ class PositionedTilesState extends State<Taquin> {
   late Stopwatch _stopwatch;
   late Timer _timer;
   String _elapsedTime = "0:00";
+
+  late ImagePicker imagePicker;
+  static String defaultImageUrl = "assets/imgs/taquin.jpg";
+  Image image = Image.asset(defaultImageUrl);
 
   void swapTiles(int src, {bool userAction = true}) {
     if (!playing) {
@@ -160,6 +167,8 @@ class PositionedTilesState extends State<Taquin> {
   void initState() {
     super.initState();
 
+    imagePicker = ImagePicker();
+
     updateTiles();
     initTimer();
   }
@@ -201,11 +210,27 @@ class PositionedTilesState extends State<Taquin> {
           Tile(
             alignment: Alignment(-1 + offsetStep * j, -1 + offsetStep * i),
             gridSize: gridSize,
-            imageURL: "assets/imgs/taquin.jpg",
+            image: image,
             originalPos: [i, j],
           ),
         );
       }
+    }
+  }
+
+  void selectImage(ImageSource source) async {
+    XFile? pickedImage = await imagePicker.pickImage(
+      source: source,
+      imageQuality: 50,
+      preferredCameraDevice: CameraDevice.rear,
+    );
+
+    if (pickedImage != null) {
+      setState(() {
+        image = Image.file(File(pickedImage.path));
+
+        updateTiles();
+      });
     }
   }
 
@@ -384,6 +409,28 @@ class PositionedTilesState extends State<Taquin> {
       floatingActionButton: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          //Image gallery button
+          Visibility(
+            visible: !playing,
+            child: Container(
+              height: 50,
+              width: 50,
+              margin: const EdgeInsets.all(10),
+              child: IconButton(
+                icon: const Icon(Icons.photo),
+                onPressed: () {
+                  selectImage(ImageSource.gallery);
+                },
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all<Color>(
+                      Theme.of(context).colorScheme.primary),
+                  iconColor: MaterialStateProperty.all<Color>(
+                      Theme.of(context).colorScheme.onPrimary),
+                ),
+              ),
+            ),
+          ),
+          //Undo button
           Visibility(
             visible: playing,
             child: Container(
@@ -404,6 +451,7 @@ class PositionedTilesState extends State<Taquin> {
               ),
             ),
           ),
+          //Main btn (play or restart)
           Container(
             height: 50,
             width: 50,
@@ -430,6 +478,27 @@ class PositionedTilesState extends State<Taquin> {
                     Theme.of(context).colorScheme.primary),
                 iconColor: MaterialStateProperty.all<Color>(
                     Theme.of(context).colorScheme.onPrimary),
+              ),
+            ),
+          ),
+          //Photo app button
+          Visibility(
+            visible: !playing,
+            child: Container(
+              height: 50,
+              width: 50,
+              margin: const EdgeInsets.all(10),
+              child: IconButton(
+                icon: const Icon(Icons.photo_camera),
+                onPressed: () {
+                  selectImage(ImageSource.camera);
+                },
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all<Color>(
+                      Theme.of(context).colorScheme.primary),
+                  iconColor: MaterialStateProperty.all<Color>(
+                      Theme.of(context).colorScheme.onPrimary),
+                ),
               ),
             ),
           ),
