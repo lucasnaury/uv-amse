@@ -5,6 +5,7 @@ import 'dart:math' as math;
 import 'dart:async'; // Importer le package 'dart:async' pour utiliser le chronomètre
 
 import 'package:image_picker/image_picker.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 // ==============
 // Models
@@ -455,7 +456,17 @@ class PositionedTilesState extends State<Taquin> {
               child: IconButton(
                 icon: const Icon(Icons.photo),
                 onPressed: () {
-                  selectImage(ImageSource.gallery);
+                  if (!kIsWeb) {
+                    selectImage(ImageSource.gallery);
+                  } else {
+                    const snackBar = SnackBar(
+                        duration: Duration(seconds: 2),
+                        content:
+                            Text("L'import d'image ne marche que sur mobile"));
+
+                    // Find the ScaffoldMessenger in the widget tree and use it to show a SnackBar
+                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                  }
                 },
                 style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.all<Color>(
@@ -527,7 +538,17 @@ class PositionedTilesState extends State<Taquin> {
               child: IconButton(
                 icon: const Icon(Icons.photo_camera),
                 onPressed: () {
-                  selectImage(ImageSource.camera);
+                  if (!kIsWeb) {
+                    selectImage(ImageSource.camera);
+                  } else {
+                    const snackBar = SnackBar(
+                        duration: Duration(seconds: 2),
+                        content:
+                            Text("L'import d'image ne marche que sur mobile"));
+
+                    // Find the ScaffoldMessenger in the widget tree and use it to show a SnackBar
+                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                  }
                 },
                 style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.all<Color>(
