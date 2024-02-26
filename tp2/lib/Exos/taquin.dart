@@ -105,10 +105,14 @@ class PositionedTilesState extends State<Taquin> {
         tiles[emptyTileIndex] = temp;
 
         //Save undo actions
-        previousEmptyTileIndexes.add(emptyTileIndex);
-        //Max 5 undo actions
-        while (previousEmptyTileIndexes.length > 5) {
-          previousEmptyTileIndexes.removeAt(0);
+        if (userAction) {
+          previousEmptyTileIndexes.add(emptyTileIndex);
+          print("add");
+          //Max 5 undo actions
+          while (previousEmptyTileIndexes.length > 5) {
+            print("coucou");
+            previousEmptyTileIndexes.removeAt(0);
+          }
         }
         //Update new empty pos
         emptyTileIndex = src;
@@ -155,7 +159,7 @@ class PositionedTilesState extends State<Taquin> {
 
   void undoAction() {
     //Make sure we can undo
-    if (emptyTileIndex == -1) {
+    if (previousEmptyTileIndexes.isEmpty) {
       return;
     }
 
@@ -268,14 +272,12 @@ class PositionedTilesState extends State<Taquin> {
     //Get initial adjacent tiles
     updateAdjacentTiles();
 
+    //Save the previous tile
+    int previousTile = -1;
+
     //Swap random tiles
     do {
       for (int i = 0; i < nbMelange; i++) {
-        //Get previous empty tile
-        int previousTile = previousEmptyTileIndexes.isNotEmpty
-            ? previousEmptyTileIndexes.last
-            : -1;
-
         //Get adjacent tiles that are not the previous one
         var listAdjacent = [];
         for (int tile = 0; tile < gridSize * gridSize; tile++) {
@@ -283,14 +285,15 @@ class PositionedTilesState extends State<Taquin> {
             listAdjacent.add(tile);
           }
         }
+
+        //Update previous tile to prevent going back and forth
+        previousTile = emptyTileIndex;
+
         //Swap empty tile with any adjacent tile (that's not the previous one)
         int randomTileIndex = listAdjacent[random.nextInt(listAdjacent.length)];
         swapTiles(randomTileIndex, userAction: false);
       }
     } while (checkVictory()); //Swap tiles until the map is not already finished
-
-    //Reset undo actions
-    previousEmptyTileIndexes = [];
   }
 
   void restart() {
