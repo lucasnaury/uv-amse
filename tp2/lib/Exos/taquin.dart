@@ -35,7 +35,10 @@ class Tile {
       return Container(
         decoration: isAdjacent
             ? BoxDecoration(
-                border: Border.all(color: Colors.blue, width: 2.0),
+                border: Border.all(
+                    color: Colors.blue,
+                    width: 2.0,
+                    strokeAlign: BorderSide.strokeAlignCenter),
               )
             : null,
         child: FittedBox(
