@@ -150,8 +150,6 @@ class PositionedTilesState extends State<Taquin> {
       int iCol = i % gridSize;
 
       if (tiles[i].originalPos[0] != iLine || tiles[i].originalPos[1] != iCol) {
-        print("Tile : ${tiles[i].originalPos}");
-        print("Original pos : ${[iLine, iCol]}");
         return false;
       }
     }
