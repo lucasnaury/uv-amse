@@ -6,6 +6,7 @@ import 'dart:async'; // For the StopWatch
 
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:tp2/helpers.dart';
 
 // ==============
 // Models
@@ -71,134 +72,47 @@ class Taquin extends StatefulWidget {
 }
 
 class PositionedTilesState extends State<Taquin> {
+  // VARIABLES
+  // List containing all the tiles
   List<Tile> tiles = [];
 
+  // Grid params
   int gridSize = 4;
   int nbMelange = 4 * 4;
   late int emptyTileIndex;
   List<int> previousEmptyTileIndexes = [];
 
+  // Game state
   bool playing = false;
   int nbCoups = 0;
 
+  // Time params
   late Stopwatch _stopwatch;
   late Timer _timer;
   String _elapsedTime = "0:00";
 
+  // Image params
   late ImagePicker imagePicker;
   static String defaultImageUrl = "assets/imgs/taquin.jpg";
   Image image = Image.asset(defaultImageUrl);
 
-  void swapTiles(int src, {bool userAction = true}) {
-    if (!playing) {
-      const snackBar = SnackBar(
-        content: Text('Appuyez sur PLAY pour commencer'),
-        duration: Duration(milliseconds: 500),
-      );
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
-      return;
-    }
-
-    //Check if valid tile to swap (above, below, left or right)
-    if (tiles[src].isAdjacent) {
-      setState(() {
-        //Swap tiles in list
-        var temp = tiles[src];
-        tiles[src] = tiles[emptyTileIndex];
-        tiles[emptyTileIndex] = temp;
-
-        //Save undo actions
-        if (userAction) {
-          previousEmptyTileIndexes.add(emptyTileIndex);
-          print("add");
-          //Max 5 undo actions
-          while (previousEmptyTileIndexes.length > 5) {
-            print("coucou");
-            previousEmptyTileIndexes.removeAt(0);
-          }
-        }
-        //Update new empty pos
-        emptyTileIndex = src;
-
-        //Update adjacent tiles
-        updateAdjacentTiles();
-
-        //Update count
-        if (userAction) {
-          nbCoups++;
-        }
-
-        // Check for victory
-        if (userAction && checkVictory()) {
-          //Only check for victory if the user is playing
-          showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return AlertDialog(
-                title: const Text('Victoire !'),
-                // ignore: prefer_interpolation_to_compose_strings
-                content:
-                    Text("Félicitations, vous avez gagné en $nbCoups coups !"),
-                actions: <Widget>[
-                  TextButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                      restart();
-                    },
-                    child: const Text('OK'),
-                  ),
-                ],
-              );
-            },
-          );
-
-          //Pause timer
-          _stopwatch.stop();
-          _timer.cancel();
-        }
-      });
-    }
-  }
-
-  void undoAction() {
-    //Make sure we can undo
-    if (previousEmptyTileIndexes.isEmpty) {
-      return;
-    }
-
-    //Undo action
-    swapTiles(previousEmptyTileIndexes[previousEmptyTileIndexes.length - 1],
-        userAction: false);
-    nbCoups--;
-
-    //Reset history
-    previousEmptyTileIndexes.removeLast();
-  }
-
-  bool checkVictory() {
-    for (int i = 0; i < tiles.length; i++) {
-      int iLine = i ~/ gridSize;
-      int iCol = i % gridSize;
-
-      if (tiles[i].originalPos[0] != iLine || tiles[i].originalPos[1] != iCol) {
-        return false;
-      }
-    }
-    return true;
-  }
-
+  // INHERITED FUNCTIONS
   @override
   void initState() {
     super.initState();
 
     imagePicker = ImagePicker();
 
+    // Init the grid with the default size
     updateTiles();
     initTimer();
   }
 
   void initTimer() {
+    // Create a stopwatch to store the elapsed time
     _stopwatch = Stopwatch();
+
+    // Create a timer to periodically show the elapsed time
     _timer = Timer.periodic(const Duration(seconds: 1), (_) {
       if (_stopwatch.isRunning) {
         setState(() {
@@ -210,61 +124,16 @@ class PositionedTilesState extends State<Taquin> {
 
   @override
   void dispose() {
+    // Kill all timer objects
     _stopwatch.stop();
-    super.dispose();
-
     _timer.cancel();
+
+    super.dispose();
   }
 
-  String formatTime(Duration duration) {
-    String twoDigits(int n) => n.toString().padLeft(2, '0');
-    String twoDigitMinutes = duration.inMinutes.toString();
-    String twoDigitSeconds = twoDigits(duration.inSeconds.remainder(60));
-    return '$twoDigitMinutes:$twoDigitSeconds';
-  }
+  // FUNCTIONS
 
-  void updateTiles() {
-    tiles = [];
-
-    var offsetStep = 2 / (gridSize - 1);
-
-    for (int i = 0; i < gridSize; i++) {
-      for (int j = 0; j < gridSize; j++) {
-        tiles.add(
-          Tile(
-            alignment: Alignment(-1 + offsetStep * j, -1 + offsetStep * i),
-            gridSize: gridSize,
-            image: image,
-            originalPos: [i, j],
-          ),
-        );
-      }
-    }
-  }
-
-  void updateAdjacentTiles() {
-    //Update adjacent tiles
-    for (int i = 0; i < tiles.length; i++) {
-      tiles[i].isAdjacent = isAdjacent(i);
-    }
-  }
-
-  void selectImage(ImageSource source) async {
-    XFile? pickedImage = await imagePicker.pickImage(
-      source: source,
-      imageQuality: 50,
-      preferredCameraDevice: CameraDevice.rear,
-    );
-
-    if (pickedImage != null) {
-      setState(() {
-        image = Image.file(File(pickedImage.path));
-
-        updateTiles();
-      });
-    }
-  }
-
+  // Start the game (set one empty tile, shuffle the grid and start timer)
   void newGame() {
     //Decide empty square
     emptyTileIndex = random.nextInt(gridSize * gridSize);
@@ -299,6 +168,7 @@ class PositionedTilesState extends State<Taquin> {
     } while (checkVictory()); //Swap tiles until the map is not already finished
   }
 
+  // Restart the game (after a win or on button press)
   void restart() {
     //Reset timer
     _stopwatch.reset();
@@ -316,6 +186,148 @@ class PositionedTilesState extends State<Taquin> {
     });
   }
 
+  //Update tiles when image or grid size is changed
+  void updateTiles() {
+    tiles = [];
+
+    var offsetStep = 2 / (gridSize - 1);
+
+    for (int i = 0; i < gridSize; i++) {
+      for (int j = 0; j < gridSize; j++) {
+        tiles.add(
+          Tile(
+            alignment: Alignment(-1 + offsetStep * j, -1 + offsetStep * i),
+            gridSize: gridSize,
+            image: image,
+            originalPos: [i, j],
+          ),
+        );
+      }
+    }
+  }
+
+  // Add the "isAdjacent" attribute on the adjacent tiles to the empty one, whenever a move is made
+  void updateAdjacentTiles() {
+    //Update adjacent tiles
+    for (int i = 0; i < tiles.length; i++) {
+      tiles[i].isAdjacent = isAdjacent(i);
+    }
+  }
+
+  // Swap the tile with the "src" index in the "tiles" List with the empty one
+  void swapTiles(int src, {bool userAction = true}) {
+    if (!playing) {
+      showSnackbar("Appuyez sur PLAY pour commencer", context,
+          const Duration(milliseconds: 500));
+      return;
+    }
+
+    //Check if valid tile to swap (above, below, left or right)
+    if (tiles[src].isAdjacent) {
+      setState(() {
+        //Swap tiles in list
+        var temp = tiles[src];
+        tiles[src] = tiles[emptyTileIndex];
+        tiles[emptyTileIndex] = temp;
+
+        //Save undo actions
+        if (userAction) {
+          previousEmptyTileIndexes.add(emptyTileIndex);
+          //Max 5 undo actions
+          while (previousEmptyTileIndexes.length > 5) {
+            previousEmptyTileIndexes.removeAt(0);
+          }
+        }
+        //Update new empty pos
+        emptyTileIndex = src;
+
+        //Update adjacent tiles
+        updateAdjacentTiles();
+
+        //Update count
+        if (userAction) {
+          nbCoups++;
+        }
+
+        // Check for victory
+        if (userAction && checkVictory()) {
+          //Only check for victory if the user is playing
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: const Text('Victoire !'),
+                // ignore: prefer_interpolation_to_compose_strings
+                content: Text(
+                    "Félicitations, vous avez gagné en $nbCoups coups et $_elapsedTime !"),
+                actions: <Widget>[
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                      restart();
+                    },
+                    child: const Text('OK'),
+                  ),
+                ],
+              );
+            },
+          );
+
+          //Pause timer
+          _stopwatch.stop();
+          _timer.cancel();
+        }
+      });
+    }
+  }
+
+  // Undo the previous action (swap back the empty tile with its previous position)
+  void undoAction() {
+    //Make sure we can undo
+    if (previousEmptyTileIndexes.isEmpty) {
+      return;
+    }
+
+    //Undo action
+    swapTiles(previousEmptyTileIndexes[previousEmptyTileIndexes.length - 1],
+        userAction: false);
+    nbCoups--;
+
+    //Remove last action
+    previousEmptyTileIndexes.removeLast();
+  }
+
+  // Check if the actual grid is the same as the correct image grid
+  bool checkVictory() {
+    for (int i = 0; i < tiles.length; i++) {
+      int iLine = i ~/ gridSize;
+      int iCol = i % gridSize;
+
+      if (tiles[i].originalPos[0] != iLine || tiles[i].originalPos[1] != iCol) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  //Select an image from the gallery or the camera
+  void selectImage(ImageSource source) async {
+    XFile? pickedImage = await imagePicker.pickImage(
+      source: source,
+      imageQuality: 50,
+      preferredCameraDevice: CameraDevice.rear,
+    );
+
+    if (pickedImage != null) {
+      setState(() {
+        image = Image.file(File(pickedImage.path));
+
+        updateTiles();
+      });
+    }
+  }
+
+  //Check if a tile is adjacent to the empty tile
   bool isAdjacent(int src) {
     bool sameLine = src ~/ gridSize == emptyTileIndex ~/ gridSize;
     bool sameColumn = src % gridSize == emptyTileIndex % gridSize;
@@ -328,6 +340,7 @@ class PositionedTilesState extends State<Taquin> {
     return (aboveOrBelow || leftOrRight);
   }
 
+  // Create a tile widget with click handler from tile
   Widget createTileWidgetFrom(Tile tile, int index) {
     return InkWell(
       child: tile.croppedImageTile(),
@@ -337,6 +350,8 @@ class PositionedTilesState extends State<Taquin> {
       },
     );
   }
+
+  // BUILD FUNCTION
 
   @override
   Widget build(BuildContext context) {
@@ -465,13 +480,8 @@ class PositionedTilesState extends State<Taquin> {
                   if (!kIsWeb) {
                     selectImage(ImageSource.gallery);
                   } else {
-                    const snackBar = SnackBar(
-                        duration: Duration(seconds: 2),
-                        content:
-                            Text("L'import d'image ne marche que sur mobile"));
-
-                    // Find the ScaffoldMessenger in the widget tree and use it to show a SnackBar
-                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                    showSnackbar(
+                        "L'import d'image ne marche que sur mobile", context);
                   }
                 },
                 style: ButtonStyle(
@@ -547,13 +557,8 @@ class PositionedTilesState extends State<Taquin> {
                   if (!kIsWeb) {
                     selectImage(ImageSource.camera);
                   } else {
-                    const snackBar = SnackBar(
-                        duration: Duration(seconds: 2),
-                        content:
-                            Text("L'import d'image ne marche que sur mobile"));
-
-                    // Find the ScaffoldMessenger in the widget tree and use it to show a SnackBar
-                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                    showSnackbar(
+                        "L'import d'image ne marche que sur mobile", context);
                   }
                 },
                 style: ButtonStyle(
