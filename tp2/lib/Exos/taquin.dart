@@ -16,11 +16,13 @@ class Tile {
   Alignment alignment;
   int gridSize;
   bool empty;
+  List<int> originalPos;
 
   Tile(
       {required this.imageURL,
       required this.gridSize,
       required this.alignment,
+      required this.originalPos,
       this.empty = false});
 
   //Create a cropped image tile
@@ -95,7 +97,8 @@ class PositionedTilesState extends State<Taquin> {
         }
 
         // Check for victory
-        if (checkVictory()) {
+        if (userAction && checkVictory()) {
+          //Only check for victory if the user is playing
           showDialog(
             context: context,
             builder: (BuildContext context) {
@@ -125,9 +128,12 @@ class PositionedTilesState extends State<Taquin> {
 
   bool checkVictory() {
     for (int i = 0; i < tiles.length; i++) {
-      if (tiles[i].alignment !=
-          Alignment(-1 + (2 / (gridSize - 1)) * (i % gridSize),
-              -1 + (2 / (gridSize - 1)) * (i ~/ gridSize))) {
+      int iLine = i ~/ gridSize;
+      int iCol = i % gridSize;
+
+      if (tiles[i].originalPos[0] != iLine || tiles[i].originalPos[1] != iCol) {
+        print("Tile : ${tiles[i].originalPos}");
+        print("Original pos : ${[iLine, iCol]}");
         return false;
       }
     }
@@ -139,6 +145,10 @@ class PositionedTilesState extends State<Taquin> {
     super.initState();
 
     updateTiles();
+    initTimer();
+  }
+
+  void initTimer() {
     _stopwatch = Stopwatch();
     _timer = Timer.periodic(const Duration(seconds: 1), (_) {
       if (_stopwatch.isRunning) {
@@ -176,6 +186,7 @@ class PositionedTilesState extends State<Taquin> {
             alignment: Alignment(-1 + offsetStep * j, -1 + offsetStep * i),
             gridSize: gridSize,
             imageURL: "assets/imgs/taquin.jpg",
+            originalPos: [i, j],
           ),
         );
       }
@@ -189,23 +200,29 @@ class PositionedTilesState extends State<Taquin> {
     tiles[emptyTileIndex].empty = true;
 
     //Swap random tiles
-    for (int i = 0; i < nbMelange; i++) {
-      //Get all adjacent tiles
-      var listAdjacent = [];
-      for (int tile = 0; tile < gridSize * gridSize; tile++) {
-        if (isAdjacent(tile)) {
-          listAdjacent.add(tile);
+    do {
+      for (int i = 0; i < nbMelange; i++) {
+        //Get all adjacent tiles
+        var listAdjacent = [];
+        for (int tile = 0; tile < gridSize * gridSize; tile++) {
+          if (isAdjacent(tile)) {
+            listAdjacent.add(tile);
+          }
         }
+        //Swap empty tile with any adjacent tile
+        swapTiles(listAdjacent[random.nextInt(listAdjacent.length)],
+            userAction: false);
       }
-      //Swap empty tile with any adjacent tile
-      swapTiles(listAdjacent[random.nextInt(listAdjacent.length)],
-          userAction: false);
-    }
+    } while (checkVictory()); //Swap tiles until the map is not already finished
   }
 
   void restart() {
+    //Reset timer
     _stopwatch.reset();
+    _timer.cancel();
     _elapsedTime = '0:00';
+    initTimer();
+
     setState(() {
       //Reset variables
       playing = false;
