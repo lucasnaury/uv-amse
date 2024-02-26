@@ -18,25 +18,34 @@ class Tile {
   int gridSize;
   bool empty;
   List<int> originalPos;
+  bool isAdjacent;
 
   Tile(
       {required this.image,
       required this.gridSize,
       required this.alignment,
       required this.originalPos,
+      this.isAdjacent = false,
       this.empty = false});
 
   //Create a cropped image tile
   Widget croppedImageTile() {
     if (!empty) {
-      return FittedBox(
-        fit: BoxFit.fill,
-        child: ClipRect(
-          child: Align(
-            alignment: alignment,
-            widthFactor: 1.0 / gridSize,
-            heightFactor: 1.0 / gridSize,
-            child: image,
+      return Container(
+        decoration: isAdjacent
+            ? BoxDecoration(
+                border: Border.all(color: Colors.blue, width: 2.0),
+              )
+            : null,
+        child: FittedBox(
+          fit: BoxFit.fill,
+          child: ClipRect(
+            child: Align(
+              alignment: alignment,
+              widthFactor: 1.0 / gridSize,
+              heightFactor: 1.0 / gridSize,
+              child: image,
+            ),
           ),
         ),
       );
@@ -87,7 +96,7 @@ class PositionedTilesState extends State<Taquin> {
     }
 
     //Check if valid tile to swap (above, below, left or right)
-    if (isAdjacent(src)) {
+    if (tiles[src].isAdjacent) {
       setState(() {
         //Swap tiles in list
         var temp = tiles[src];
@@ -102,6 +111,9 @@ class PositionedTilesState extends State<Taquin> {
         }
         //Update new empty pos
         emptyTileIndex = src;
+
+        //Update adjacent tiles
+        updateAdjacentTiles();
 
         //Update count
         if (userAction) {
@@ -220,6 +232,13 @@ class PositionedTilesState extends State<Taquin> {
     }
   }
 
+  void updateAdjacentTiles() {
+    //Update adjacent tiles
+    for (int i = 0; i < tiles.length; i++) {
+      tiles[i].isAdjacent = isAdjacent(i);
+    }
+  }
+
   void selectImage(ImageSource source) async {
     XFile? pickedImage = await imagePicker.pickImage(
       source: source,
@@ -240,7 +259,11 @@ class PositionedTilesState extends State<Taquin> {
     //Decide empty square
     emptyTileIndex = random.nextInt(gridSize * gridSize);
 
+    //Set initial empty tile
     tiles[emptyTileIndex].empty = true;
+
+    //Get initial adjacent tiles
+    updateAdjacentTiles();
 
     //Swap random tiles
     do {
@@ -253,7 +276,7 @@ class PositionedTilesState extends State<Taquin> {
         //Get adjacent tiles that are not the previous one
         var listAdjacent = [];
         for (int tile = 0; tile < gridSize * gridSize; tile++) {
-          if (isAdjacent(tile) && tile != previousTile) {
+          if (tiles[tile].isAdjacent && tile != previousTile) {
             listAdjacent.add(tile);
           }
         }
