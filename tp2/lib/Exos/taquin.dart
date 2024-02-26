@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
-import 'dart:async'; // Importer le package 'dart:async' pour utiliser le chronomètre
+import 'dart:async'; // For the StopWatch
 
 import 'package:image_picker/image_picker.dart';
 
