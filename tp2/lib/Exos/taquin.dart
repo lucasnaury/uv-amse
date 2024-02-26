@@ -261,7 +261,7 @@ class PositionedTilesState extends State<Taquin> {
       appBar: AppBar(
         backgroundColor: Theme.of(context).primaryColor,
         foregroundColor: Theme.of(context).colorScheme.onPrimary,
-        title: const Text('Exercice 6b'),
+        title: const Text('Taquin'),
         centerTitle: true,
       ),
       body: SafeArea(
