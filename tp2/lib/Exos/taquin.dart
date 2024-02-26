@@ -116,7 +116,9 @@ class PositionedTilesState extends State<Taquin> {
             builder: (BuildContext context) {
               return AlertDialog(
                 title: const Text('Victoire !'),
-                content: const Text('Félicitations, vous avez gagné !'),
+                // ignore: prefer_interpolation_to_compose_strings
+                content:
+                    Text("Félicitations, vous avez gagné en $nbCoups coups !"),
                 actions: <Widget>[
                   TextButton(
                     onPressed: () {
@@ -377,7 +379,8 @@ class PositionedTilesState extends State<Taquin> {
                             min: (gridSize * gridSize).toDouble(),
                             max: (gridSize * gridSize * 2).toDouble(),
                             divisions: (gridSize * gridSize),
-                            label: nbMelange.round().toString(),
+                            label:
+                                "${((nbMelange / (gridSize * gridSize) - 1) * 100).round()}%",
                             onChanged: (double value) {
                               setState(() {
                                 nbMelange = value.round();
