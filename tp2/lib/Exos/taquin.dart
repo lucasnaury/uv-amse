@@ -62,6 +62,7 @@ class PositionedTilesState extends State<Taquin> {
   int gridSize = 4;
   int nbMelange = 4 * 4;
   late int emptyTileIndex;
+  int previousEmptyTileIndex = -1;
 
   bool playing = false;
   int nbCoups = 0;
@@ -89,6 +90,9 @@ class PositionedTilesState extends State<Taquin> {
         tiles[emptyTileIndex] = temp;
 
         //Update new empty pos
+        if (userAction) {
+          previousEmptyTileIndex = emptyTileIndex;
+        }
         emptyTileIndex = src;
 
         //Update count
@@ -124,6 +128,20 @@ class PositionedTilesState extends State<Taquin> {
         }
       });
     }
+  }
+
+  void undoAction() {
+    //Make sure we can undo
+    if (previousEmptyTileIndex == -1) {
+      return;
+    }
+
+    //Undo action
+    swapTiles(previousEmptyTileIndex, userAction: false);
+    nbCoups--;
+
+    //Reset history
+    previousEmptyTileIndex = -1;
   }
 
   bool checkVictory() {
@@ -364,35 +382,60 @@ class PositionedTilesState extends State<Taquin> {
           ),
         ),
       ),
-      floatingActionButton: Container(
-        height: 50,
-        width: 50,
-        margin: const EdgeInsets.all(10),
-        child: IconButton(
-          icon: Icon(playing ? Icons.replay : Icons.play_arrow),
-          onPressed: () {
-            setState(() {
-              //Toggle play state
-              playing = !playing;
-              //Do action
-              if (playing) {
-                newGame();
-                _stopwatch.reset();
-                _stopwatch.start();
-              } else {
-                restart();
-                _stopwatch.stop();
-              }
-            });
-          },
-          // style: ,
-          style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all<Color>(
-                Theme.of(context).colorScheme.primary),
-            iconColor: MaterialStateProperty.all<Color>(
-                Theme.of(context).colorScheme.onPrimary),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButton: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Visibility(
+            visible: playing,
+            child: Container(
+              height: 50,
+              width: 50,
+              margin: const EdgeInsets.all(10),
+              child: IconButton(
+                icon: const Icon(Icons.undo),
+                onPressed: previousEmptyTileIndex == -1 ? null : undoAction,
+                style: ButtonStyle(
+                  backgroundColor: previousEmptyTileIndex == -1
+                      ? MaterialStateProperty.all<Color>(Colors.grey)
+                      : MaterialStateProperty.all<Color>(
+                          Theme.of(context).colorScheme.primary),
+                  iconColor: MaterialStateProperty.all<Color>(
+                      Theme.of(context).colorScheme.onPrimary),
+                ),
+              ),
+            ),
           ),
-        ),
+          Container(
+            height: 50,
+            width: 50,
+            margin: const EdgeInsets.all(10),
+            child: IconButton(
+              icon: Icon(playing ? Icons.replay : Icons.play_arrow),
+              onPressed: () {
+                setState(() {
+                  //Toggle play state
+                  playing = !playing;
+                  //Do action
+                  if (playing) {
+                    newGame();
+                    _stopwatch.reset();
+                    _stopwatch.start();
+                  } else {
+                    restart();
+                    _stopwatch.stop();
+                  }
+                });
+              },
+              style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all<Color>(
+                    Theme.of(context).colorScheme.primary),
+                iconColor: MaterialStateProperty.all<Color>(
+                    Theme.of(context).colorScheme.onPrimary),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
