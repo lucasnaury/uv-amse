@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-/// Flutter code sample for [ListTile].
-
 class Exercice3 extends StatelessWidget {
   const Exercice3({super.key});
 
@@ -17,71 +15,79 @@ class Exercice3 extends StatelessWidget {
       ),
       body: ListView(
         children: <Widget>[
-          Card(
-            child: ListTile(
-              leading: const Icon(Icons.looks_one, size: 40),
-              title: const Text('Exercice 1'),
-              subtitle: const Text("Affichage d'une image"),
-              trailing: const Icon(Icons.play_arrow),
-              onTap: () => GoRouter.of(context).push('/ex1'),
-            ),
+          ExerciceItem(
+            icon: Icons.looks_one,
+            title: "Exercice 1",
+            desc: "Affichage d'une image",
+            route: '/ex1',
           ),
-          Card(
-            child: ListTile(
-              leading: const Icon(Icons.looks_two, size: 40),
-              title: const Text('Exercice 2'),
-              subtitle: const Text("Rotation, échelle, animation d'une image"),
-              trailing: const Icon(Icons.play_arrow),
-              onTap: () => GoRouter.of(context).push('/ex2'),
-            ),
+          ExerciceItem(
+            icon: Icons.looks_two,
+            title: "Exercice 2",
+            desc: "Rotation, échelle, animation d'une image",
+            route: '/ex2',
           ),
-          Card(
-            child: ListTile(
-              leading: const Icon(Icons.looks_4, size: 40),
-              title: const Text('Exercice 4'),
-              subtitle: const Text("Rogner une image"),
-              trailing: const Icon(Icons.play_arrow),
-              onTap: () => GoRouter.of(context).push('/ex4'),
-            ),
+          ExerciceItem(
+            icon: Icons.looks_4,
+            title: "Exercice 4",
+            desc: "Rogner une image",
+            route: '/ex4',
           ),
-          Card(
-            child: ListTile(
-              leading: const Icon(Icons.looks_5, size: 40),
-              title: const Text('Exercice 5'),
-              subtitle: const Text("Découper une image en grille de tuiles"),
-              trailing: const Icon(Icons.play_arrow),
-              onTap: () => GoRouter.of(context).push('/ex5'),
-            ),
+          ExerciceItem(
+            icon: Icons.looks_5,
+            title: "Exercice 5",
+            desc: "Découper une image en grille de tuiles",
+            route: '/ex5',
           ),
-          Card(
-            child: ListTile(
-              leading: const Icon(Icons.looks_6, size: 40),
-              title: const Text('Exercice 6a'),
-              subtitle: const Text("Déplacer des tuiles"),
-              trailing: const Icon(Icons.play_arrow),
-              onTap: () => GoRouter.of(context).push('/ex6a'),
-            ),
+          ExerciceItem(
+            icon: Icons.looks_6,
+            title: "Exercice 6a",
+            desc: "Déplacer des tuiles",
+            route: '/ex6a',
           ),
-          Card(
-            child: ListTile(
-              leading: const Icon(Icons.looks_6, size: 40),
-              title: const Text('Exercice 6b'),
-              subtitle:
-                  const Text("Déplacer des tuiles dans une grille complète"),
-              trailing: const Icon(Icons.play_arrow),
-              onTap: () => GoRouter.of(context).push('/ex6b'),
-            ),
+          ExerciceItem(
+            icon: Icons.looks_6,
+            title: "Exercice 6b",
+            desc: "Déplacer des tuiles dans une grille complète",
+            route: '/ex6b',
           ),
-          Card(
-            child: ListTile(
-              leading: Image.asset("assets/imgs/taquin-icon.jpg", width: 40),
-              title: const Text('Taquin'),
-              subtitle: const Text("Jeu du taquin, exercice final"),
-              trailing: const Icon(Icons.play_arrow),
-              onTap: () => GoRouter.of(context).push('/taquin'),
-            ),
+          ExerciceItem(
+            leading: Image.asset("assets/imgs/taquin-icon.jpg", width: 40),
+            title: "Taquin",
+            desc: "Jeu du taquin, exercice final",
+            route: '/taquin',
           ),
         ],
+      ),
+    );
+  }
+}
+
+class ExerciceItem extends StatelessWidget {
+  final IconData? icon;
+  final Widget? leading;
+  final String title;
+  final String desc;
+  final String route;
+
+  ExerciceItem({
+    super.key,
+    required this.title,
+    required this.desc,
+    required this.route,
+    this.icon,
+    this.leading,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      child: ListTile(
+        leading: icon != null ? Icon(icon, size: 40) : leading,
+        title: Text(title),
+        subtitle: Text(desc),
+        trailing: const Icon(Icons.play_arrow),
+        onTap: () => GoRouter.of(context).push(route),
       ),
     );
   }
