@@ -174,6 +174,14 @@ class PositionedTilesState extends State<Taquin> {
         swapTiles(randomTileIndex, userAction: false);
       }
     } while (checkVictory()); //Swap tiles until the map is not already finished
+
+    //Show the initial number of moves remaining
+    int minimumMoves = calculateMinimumMoves();
+    showSnackbar(
+      "Coups minimum restants : $minimumMoves",
+      context,
+      const Duration(milliseconds: 1000),
+    );
   }
 
   // Restart the game (after a win or on button press)
@@ -265,6 +273,9 @@ class PositionedTilesState extends State<Taquin> {
           nbCoups++;
         }
 
+        // Calculate minimum moves remaining
+        int minimumMoves = calculateMinimumMoves();
+
         // Check for victory if the user is playing
         if (userAction && checkVictory()) {
           //Show confettis
@@ -298,6 +309,15 @@ class PositionedTilesState extends State<Taquin> {
           //Pause timer
           _stopwatch.stop();
           _timer.cancel();
+        }
+
+        if (userAction) {
+          // Show minimum moves remaining
+          showSnackbar(
+            "Coups minimum restants : $minimumMoves",
+            context,
+            const Duration(milliseconds: 1000),
+          );
         }
       });
     }
@@ -371,6 +391,23 @@ class PositionedTilesState extends State<Taquin> {
         swapTiles(index);
       },
     );
+  }
+
+  // TEST SOLVER
+  int calculateMinimumMoves() {
+    // The minimum number of moves remaining is the Manhattan distance
+    // between each tile's current position and its original position.
+    int totalMoves = 0;
+    for (int i = 0; i < tiles.length; i++) {
+      int currentRow = i ~/ gridSize;
+      int currentCol = i % gridSize;
+      int originalRow = tiles[i].originalPos[0];
+      int originalCol = tiles[i].originalPos[1];
+      int moves =
+          (currentRow - originalRow).abs() + (currentCol - originalCol).abs();
+      totalMoves += moves;
+    }
+    return totalMoves ~/ 2; // Each move swaps two tiles, so divide by 2
   }
 
   // BUILD FUNCTION
