@@ -513,122 +513,70 @@ class PositionedTilesState extends State<Taquin> {
           Visibility(
             visible: !playing,
             //Undo Button
-            replacement: Container(
-              height: 50,
-              width: 50,
-              margin: const EdgeInsets.all(10),
-              child: IconButton(
-                icon: const Icon(Icons.undo),
-                onPressed: previousEmptyTileIndexes.isEmpty ? null : undoAction,
-                style: ButtonStyle(
-                  backgroundColor: previousEmptyTileIndexes.isEmpty
-                      ? MaterialStateProperty.all<Color>(Colors.grey)
-                      : MaterialStateProperty.all<Color>(
-                          Theme.of(context).colorScheme.primary),
-                  iconColor: MaterialStateProperty.all<Color>(
-                      Theme.of(context).colorScheme.onPrimary),
-                ),
-              ),
+            replacement: MyFloatingButton(
+              context,
+              icon: Icons.undo,
+              onPressed: previousEmptyTileIndexes.isEmpty ? null : undoAction,
+              disabled: previousEmptyTileIndexes.isEmpty,
             ),
             //Image gallery button
-            child: Container(
-              height: 50,
-              width: 50,
-              margin: const EdgeInsets.all(10),
-              child: IconButton(
-                icon: const Icon(Icons.photo),
-                onPressed: () {
-                  if (!kIsWeb) {
-                    selectImage(ImageSource.gallery);
-                  } else {
-                    showSnackbar(
-                        "L'import d'image ne marche que sur mobile", context);
-                  }
-                },
-                style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all<Color>(
-                      Theme.of(context).colorScheme.primary),
-                  iconColor: MaterialStateProperty.all<Color>(
-                      Theme.of(context).colorScheme.onPrimary),
-                ),
-              ),
+            child: MyFloatingButton(
+              context,
+              icon: Icons.photo,
+              onPressed: () {
+                if (!kIsWeb) {
+                  selectImage(ImageSource.gallery);
+                } else {
+                  showSnackbar(
+                      "L'import d'image ne marche que sur mobile", context);
+                }
+              },
             ),
           ),
           //Main btn (play or restart)
-          Container(
-            height: 50,
-            width: 50,
-            margin: const EdgeInsets.all(10),
-            child: IconButton(
-              icon: Icon(playing ? Icons.replay : Icons.play_arrow),
-              onPressed: () {
-                setState(() {
-                  //Toggle play state
-                  playing = !playing;
-                  //Do action
-                  if (playing) {
-                    newGame();
-                    _stopwatch.reset();
-                    _stopwatch.start();
-                  } else {
-                    restart();
-                    _stopwatch.stop();
-                  }
-                });
-              },
-              style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all<Color>(
-                    Theme.of(context).colorScheme.primary),
-                iconColor: MaterialStateProperty.all<Color>(
-                    Theme.of(context).colorScheme.onPrimary),
-              ),
-            ),
+          MyFloatingButton(
+            context,
+            icon: playing ? Icons.replay : Icons.play_arrow,
+            onPressed: () {
+              setState(() {
+                //Toggle play state
+                playing = !playing;
+                //Do action
+                if (playing) {
+                  newGame();
+                  _stopwatch.reset();
+                  _stopwatch.start();
+                } else {
+                  restart();
+                  _stopwatch.stop();
+                }
+              });
+            },
           ),
           Visibility(
             visible: !playing,
             //Base image toggle button
-            replacement: Container(
-              height: 50,
-              width: 50,
-              margin: const EdgeInsets.all(10),
-              child: IconButton(
-                icon: Icon(
-                    showBaseImage ? Icons.visibility_off : Icons.visibility),
-                onPressed: () {
-                  setState(() {
-                    showBaseImage = !showBaseImage;
-                  });
-                },
-                style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all<Color>(
-                      Theme.of(context).colorScheme.primary),
-                  iconColor: MaterialStateProperty.all<Color>(
-                      Theme.of(context).colorScheme.onPrimary),
-                ),
-              ),
+            replacement: MyFloatingButton(
+              context,
+              icon: showBaseImage ? Icons.visibility_off : Icons.visibility,
+              onPressed: () {
+                setState(() {
+                  showBaseImage = !showBaseImage;
+                });
+              },
             ),
             //Photo app button
-            child: Container(
-              height: 50,
-              width: 50,
-              margin: const EdgeInsets.all(10),
-              child: IconButton(
-                icon: const Icon(Icons.photo_camera),
-                onPressed: () {
-                  if (!kIsWeb) {
-                    selectImage(ImageSource.camera);
-                  } else {
-                    showSnackbar(
-                        "L'import d'image ne marche que sur mobile", context);
-                  }
-                },
-                style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all<Color>(
-                      Theme.of(context).colorScheme.primary),
-                  iconColor: MaterialStateProperty.all<Color>(
-                      Theme.of(context).colorScheme.onPrimary),
-                ),
-              ),
+            child: MyFloatingButton(
+              context,
+              icon: Icons.photo_camera,
+              onPressed: () {
+                if (!kIsWeb) {
+                  selectImage(ImageSource.camera);
+                } else {
+                  showSnackbar(
+                      "L'import d'image ne marche que sur mobile", context);
+                }
+              },
             ),
           ),
         ],

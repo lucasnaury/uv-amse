@@ -14,3 +14,39 @@ void showSnackbar(String text, var context, [Duration? duration]) {
   // Find the ScaffoldMessenger in the widget tree and use it to show a SnackBar
   ScaffoldMessenger.of(context).showSnackBar(snackBar);
 }
+
+// Floating btn widget
+class MyFloatingButton extends StatelessWidget {
+  final IconData icon;
+  final void Function()? onPressed;
+  final Color? color;
+  final bool disabled;
+
+  const MyFloatingButton(context,
+      {super.key,
+      required this.icon,
+      required this.onPressed,
+      this.color,
+      this.disabled = false});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 50,
+      width: 50,
+      margin: const EdgeInsets.all(10),
+      child: IconButton(
+        icon: Icon(icon),
+        onPressed: disabled ? null : onPressed,
+        style: ButtonStyle(
+          backgroundColor: disabled
+              ? MaterialStateProperty.all<Color>(Colors.grey)
+              : MaterialStateProperty.all<Color>(
+                  color ?? Theme.of(context).colorScheme.primary),
+          iconColor: MaterialStateProperty.all<Color>(
+              Theme.of(context).colorScheme.onPrimary),
+        ),
+      ),
+    );
+  }
+}
