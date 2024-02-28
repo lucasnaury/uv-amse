@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
 import 'dart:async'; // For the StopWatch
+import 'package:confetti/confetti.dart';
 
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
@@ -96,10 +97,16 @@ class PositionedTilesState extends State<Taquin> {
   static String defaultImageUrl = "assets/imgs/taquin.jpg";
   Image image = Image.asset(defaultImageUrl);
 
+  //Confetti
+  late ConfettiController _confettisController;
+
   // INHERITED FUNCTIONS
   @override
   void initState() {
     super.initState();
+
+    _confettisController =
+        ConfettiController(duration: const Duration(seconds: 10));
 
     imagePicker = ImagePicker();
 
@@ -249,9 +256,12 @@ class PositionedTilesState extends State<Taquin> {
           nbCoups++;
         }
 
-        // Check for victory
+        // Check for victory if the user is playing
         if (userAction && checkVictory()) {
-          //Only check for victory if the user is playing
+          //Show confettis
+          _confettisController.play();
+
+          //Show popup
           showDialog(
             context: context,
             builder: (BuildContext context) {
@@ -265,6 +275,9 @@ class PositionedTilesState extends State<Taquin> {
                     onPressed: () {
                       Navigator.of(context).pop();
                       restart();
+
+                      //Stop confettis
+                      _confettisController.stop();
                     },
                     child: const Text('OK'),
                   ),
@@ -374,13 +387,29 @@ class PositionedTilesState extends State<Taquin> {
                   Column(
                 children: [
                   GridView.count(
-                      crossAxisSpacing: 5,
-                      mainAxisSpacing: 5,
-                      shrinkWrap: true,
-                      crossAxisCount: gridSize,
-                      children: tiles.asMap().entries.map((entry) {
-                        return createTileWidgetFrom(entry.value, entry.key);
-                      }).toList()),
+                    crossAxisSpacing: 5,
+                    mainAxisSpacing: 5,
+                    shrinkWrap: true,
+                    crossAxisCount: gridSize,
+                    children: tiles.asMap().entries.map((entry) {
+                      return createTileWidgetFrom(entry.value, entry.key);
+                    }).toList(),
+                  ),
+                  ConfettiWidget(
+                    confettiController: _confettisController,
+                    blastDirectionality: BlastDirectionality.explosive,
+                    emissionFrequency: 0.05, // how often it should emit
+                    numberOfParticles: 20, // number of particles to emit
+                    gravity: 0.05, // gravity - or fall speed
+                    shouldLoop: false,
+                    colors: const [
+                      Colors.green,
+                      Colors.blue,
+                      Colors.pink,
+                      Colors.orange,
+                      Colors.purple
+                    ], // manually specify the colors to be used
+                  ),
                   Visibility(
                     visible: !playing,
                     child: Row(
