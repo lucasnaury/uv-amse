@@ -37,7 +37,7 @@ class Tile {
       return Container(
         foregroundDecoration: isAdjacent
             ? BoxDecoration(
-                border: Border.all(color: Colors.blue, width: 5.0),
+                border: Border.all(color: Colors.blue, width: 2.0),
               )
             : null,
         child: FittedBox(
