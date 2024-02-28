@@ -519,6 +519,7 @@ class PositionedTilesState extends State<Taquin> {
               icon: Icons.undo,
               onPressed: previousEmptyTileIndexes.isEmpty ? null : undoAction,
               disabled: previousEmptyTileIndexes.isEmpty,
+              color: Colors.blue.shade600,
             ),
             //Image gallery button
             child: MyFloatingButton(
@@ -571,6 +572,7 @@ class PositionedTilesState extends State<Taquin> {
                   showBaseImage = !showBaseImage;
                 });
               },
+              color: Colors.blue.shade600,
             ),
           ),
           Visibility(
