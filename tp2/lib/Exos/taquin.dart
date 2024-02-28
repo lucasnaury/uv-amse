@@ -514,14 +514,12 @@ class PositionedTilesState extends State<Taquin> {
             visible: !playing,
             //Undo Button
             replacement: MyFloatingButton(
-              context,
               icon: Icons.undo,
               onPressed: previousEmptyTileIndexes.isEmpty ? null : undoAction,
               disabled: previousEmptyTileIndexes.isEmpty,
             ),
             //Image gallery button
             child: MyFloatingButton(
-              context,
               icon: Icons.photo,
               onPressed: () {
                 if (!kIsWeb) {
@@ -531,11 +529,11 @@ class PositionedTilesState extends State<Taquin> {
                       "L'import d'image ne marche que sur mobile", context);
                 }
               },
+              color: Colors.blue.shade600,
             ),
           ),
           //Main btn (play or restart)
           MyFloatingButton(
-            context,
             icon: playing ? Icons.replay : Icons.play_arrow,
             onPressed: () {
               setState(() {
@@ -557,7 +555,6 @@ class PositionedTilesState extends State<Taquin> {
             visible: !playing,
             //Base image toggle button
             replacement: MyFloatingButton(
-              context,
               icon: showBaseImage ? Icons.visibility_off : Icons.visibility,
               onPressed: () {
                 setState(() {
@@ -567,7 +564,6 @@ class PositionedTilesState extends State<Taquin> {
             ),
             //Photo app button
             child: MyFloatingButton(
-              context,
               icon: Icons.photo_camera,
               onPressed: () {
                 if (!kIsWeb) {
@@ -577,6 +573,7 @@ class PositionedTilesState extends State<Taquin> {
                       "L'import d'image ne marche que sur mobile", context);
                 }
               },
+              color: Colors.blue.shade600,
             ),
           ),
         ],

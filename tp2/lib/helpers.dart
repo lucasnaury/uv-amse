@@ -22,7 +22,7 @@ class MyFloatingButton extends StatelessWidget {
   final Color? color;
   final bool disabled;
 
-  const MyFloatingButton(context,
+  const MyFloatingButton(
       {super.key,
       required this.icon,
       required this.onPressed,
