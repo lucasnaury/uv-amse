@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'dart:math' as math;
 import 'dart:async'; // For the StopWatch
 import 'package:confetti/confetti.dart';
+import 'package:flutter/widgets.dart';
 
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
@@ -91,8 +92,9 @@ class PositionedTilesState extends State<Taquin> {
 
   // Image params
   late ImagePicker imagePicker;
-  static String defaultImageUrl = "assets/imgs/taquin.jpg";
-  Image image = Image.asset(defaultImageUrl);
+  static String localImageUrl = "assets/imgs/taquin.jpg";
+  static String networkImageUrl = "https://picsum.photos/1024/1024";
+  Image image = Image.asset(localImageUrl);
   bool showBaseImage = false;
   late GridView baseImageGrid;
 
@@ -576,6 +578,21 @@ class PositionedTilesState extends State<Taquin> {
               color: Colors.blue.shade600,
             ),
           ),
+          Visibility(
+            visible: !playing,
+            child: MyFloatingButton(
+              icon: Icons.language,
+              onPressed: () {
+                setState(() {
+                  //Reload image
+                  image = Image.network(
+                      "$networkImageUrl?random=${random.nextDouble()}");
+                  updateTiles();
+                });
+              },
+              color: Colors.blue.shade600,
+            ),
+          )
         ],
       ),
     );

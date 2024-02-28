@@ -22,7 +22,7 @@ After having selected the number of tiles and difficulty, you can start playing 
 
 Here is a non exhaustive list of the non-required functionnalities we have created:
 - Choice of the difficulty
-- Choice of the image
+- Choice of the image (gallery, camera, randomly from the web)
 - Stopwatch
 - Number of moves
 - Undo Button
@@ -30,7 +30,3 @@ Here is a non exhaustive list of the non-required functionnalities we have creat
 - Restart button
 - End-of-game pop up
 - Confettis at the end of the game
-
-## TODOs
-- bouton pour load image random d'internet
-- solver lol
