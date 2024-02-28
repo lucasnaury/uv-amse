@@ -522,10 +522,18 @@ class PositionedTilesState extends State<Taquin> {
             ),
             //Image gallery button
             child: MyFloatingButton(
-              icon: Icons.photo,
+              icon: Icons.camera,
               onPressed: () {
                 if (!kIsWeb) {
-                  selectImage(ImageSource.gallery);
+                  //Ask user to go to Gallery or Camera
+                  showCustomDialog(
+                    context,
+                    title: "Choix de la source",
+                    leftBtnText: "Gallerie",
+                    leftBtnPressed: () => selectImage(ImageSource.gallery),
+                    rightBtnText: "Caméra",
+                    rightBtnPressed: () => selectImage(ImageSource.camera),
+                  );
                 } else {
                   showSnackbar(
                       "L'import d'image ne marche que sur mobile", context);
@@ -554,28 +562,15 @@ class PositionedTilesState extends State<Taquin> {
             },
           ),
           Visibility(
-            visible: !playing,
+            visible: playing,
             //Base image toggle button
-            replacement: MyFloatingButton(
+            child: MyFloatingButton(
               icon: showBaseImage ? Icons.visibility_off : Icons.visibility,
               onPressed: () {
                 setState(() {
                   showBaseImage = !showBaseImage;
                 });
               },
-            ),
-            //Photo app button
-            child: MyFloatingButton(
-              icon: Icons.photo_camera,
-              onPressed: () {
-                if (!kIsWeb) {
-                  selectImage(ImageSource.camera);
-                } else {
-                  showSnackbar(
-                      "L'import d'image ne marche que sur mobile", context);
-                }
-              },
-              color: Colors.blue.shade600,
             ),
           ),
           Visibility(
