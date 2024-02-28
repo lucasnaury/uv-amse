@@ -35,12 +35,9 @@ class Tile {
   Widget croppedImageTile() {
     if (!empty) {
       return Container(
-        decoration: isAdjacent
+        foregroundDecoration: isAdjacent
             ? BoxDecoration(
-                border: Border.all(
-                    color: Colors.blue,
-                    width: 2.0,
-                    strokeAlign: BorderSide.strokeAlignCenter),
+                border: Border.all(color: Colors.blue, width: 5.0),
               )
             : null,
         child: FittedBox(
@@ -96,6 +93,8 @@ class PositionedTilesState extends State<Taquin> {
   late ImagePicker imagePicker;
   static String defaultImageUrl = "assets/imgs/taquin.jpg";
   Image image = Image.asset(defaultImageUrl);
+  bool showBaseImage = false;
+  late GridView baseImageGrid;
 
   //Confetti
   late ConfettiController _confettisController;
@@ -211,6 +210,14 @@ class PositionedTilesState extends State<Taquin> {
         );
       }
     }
+
+    //Copy the base image grid
+    baseImageGrid = GridView.count(
+        crossAxisSpacing: 5,
+        mainAxisSpacing: 5,
+        shrinkWrap: true,
+        crossAxisCount: gridSize,
+        children: tiles.map((tile) => tile.croppedImageTile()).toList());
   }
 
   // Add the "isAdjacent" attribute on the adjacent tiles to the empty one, whenever a move is made
@@ -386,14 +393,21 @@ class PositionedTilesState extends State<Taquin> {
                   //Create a grid for the tiles
                   Column(
                 children: [
-                  GridView.count(
-                    crossAxisSpacing: 5,
-                    mainAxisSpacing: 5,
-                    shrinkWrap: true,
-                    crossAxisCount: gridSize,
-                    children: tiles.asMap().entries.map((entry) {
-                      return createTileWidgetFrom(entry.value, entry.key);
-                    }).toList(),
+                  Offstage(
+                    offstage: showBaseImage,
+                    child: GridView.count(
+                      crossAxisSpacing: 5,
+                      mainAxisSpacing: 5,
+                      shrinkWrap: true,
+                      crossAxisCount: gridSize,
+                      children: tiles.asMap().entries.map((entry) {
+                        return createTileWidgetFrom(entry.value, entry.key);
+                      }).toList(),
+                    ),
+                  ),
+                  Offstage(
+                    offstage: !showBaseImage,
+                    child: baseImageGrid,
                   ),
                   ConfettiWidget(
                     confettiController: _confettisController,
@@ -496,9 +510,27 @@ class PositionedTilesState extends State<Taquin> {
       floatingActionButton: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          //Image gallery button
           Visibility(
             visible: !playing,
+            //Undo Button
+            replacement: Container(
+              height: 50,
+              width: 50,
+              margin: const EdgeInsets.all(10),
+              child: IconButton(
+                icon: const Icon(Icons.undo),
+                onPressed: previousEmptyTileIndexes.isEmpty ? null : undoAction,
+                style: ButtonStyle(
+                  backgroundColor: previousEmptyTileIndexes.isEmpty
+                      ? MaterialStateProperty.all<Color>(Colors.grey)
+                      : MaterialStateProperty.all<Color>(
+                          Theme.of(context).colorScheme.primary),
+                  iconColor: MaterialStateProperty.all<Color>(
+                      Theme.of(context).colorScheme.onPrimary),
+                ),
+              ),
+            ),
+            //Image gallery button
             child: Container(
               height: 50,
               width: 50,
@@ -516,27 +548,6 @@ class PositionedTilesState extends State<Taquin> {
                 style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.all<Color>(
                       Theme.of(context).colorScheme.primary),
-                  iconColor: MaterialStateProperty.all<Color>(
-                      Theme.of(context).colorScheme.onPrimary),
-                ),
-              ),
-            ),
-          ),
-          //Undo button
-          Visibility(
-            visible: playing,
-            child: Container(
-              height: 50,
-              width: 50,
-              margin: const EdgeInsets.all(10),
-              child: IconButton(
-                icon: const Icon(Icons.undo),
-                onPressed: previousEmptyTileIndexes.isEmpty ? null : undoAction,
-                style: ButtonStyle(
-                  backgroundColor: previousEmptyTileIndexes.isEmpty
-                      ? MaterialStateProperty.all<Color>(Colors.grey)
-                      : MaterialStateProperty.all<Color>(
-                          Theme.of(context).colorScheme.primary),
                   iconColor: MaterialStateProperty.all<Color>(
                       Theme.of(context).colorScheme.onPrimary),
                 ),
@@ -573,9 +584,30 @@ class PositionedTilesState extends State<Taquin> {
               ),
             ),
           ),
-          //Photo app button
           Visibility(
             visible: !playing,
+            //Base image toggle button
+            replacement: Container(
+              height: 50,
+              width: 50,
+              margin: const EdgeInsets.all(10),
+              child: IconButton(
+                icon: Icon(
+                    showBaseImage ? Icons.visibility_off : Icons.visibility),
+                onPressed: () {
+                  setState(() {
+                    showBaseImage = !showBaseImage;
+                  });
+                },
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all<Color>(
+                      Theme.of(context).colorScheme.primary),
+                  iconColor: MaterialStateProperty.all<Color>(
+                      Theme.of(context).colorScheme.onPrimary),
+                ),
+              ),
+            ),
+            //Photo app button
             child: Container(
               height: 50,
               width: 50,
