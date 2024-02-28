@@ -26,6 +26,6 @@ Here is a non exhaustive list of the non-required functionnalities we have creat
 - Undo Button
 - Restart button
 - End-of-game pop up
-- Conefettis at the end of the game
+- Confettis at the end of the game
 - Choice of the difficulty
 - Choice of the image
