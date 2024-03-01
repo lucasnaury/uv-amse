@@ -30,3 +30,5 @@ Here is a non exhaustive list of the non-required functionnalities we have creat
 - Restart button
 - End-of-game pop up
 - Confettis at the end of the game
+
+On the branch *** Solver-unsolved *** we have an unresolved version, which doesn't work all the time, of a solver showing the number of remaining moves needed to solve the Taquin puzzle, and this at each move (in theory).
