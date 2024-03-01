@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'dart:math' as math;
 import 'dart:async'; // For the StopWatch
 import 'package:confetti/confetti.dart';
+import 'package:flutter/widgets.dart';
 
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
@@ -35,12 +36,9 @@ class Tile {
   Widget croppedImageTile() {
     if (!empty) {
       return Container(
-        decoration: isAdjacent
+        foregroundDecoration: isAdjacent
             ? BoxDecoration(
-                border: Border.all(
-                    color: Colors.blue,
-                    width: 2.0,
-                    strokeAlign: BorderSide.strokeAlignCenter),
+                border: Border.all(color: Colors.blue, width: 2.0),
               )
             : null,
         child: FittedBox(
@@ -94,8 +92,11 @@ class PositionedTilesState extends State<Taquin> {
 
   // Image params
   late ImagePicker imagePicker;
-  static String defaultImageUrl = "assets/imgs/taquin.jpg";
-  Image image = Image.asset(defaultImageUrl);
+  static String localImageUrl = "assets/imgs/taquin.jpg";
+  static String networkImageUrl = "https://picsum.photos/1024/1024";
+  Image image = Image.asset(localImageUrl);
+  bool showBaseImage = false;
+  late GridView baseImageGrid;
 
   //Confetti
   late ConfettiController _confettisController;
@@ -173,6 +174,14 @@ class PositionedTilesState extends State<Taquin> {
         swapTiles(randomTileIndex, userAction: false);
       }
     } while (checkVictory()); //Swap tiles until the map is not already finished
+
+    //Show the initial number of moves remaining
+    int minimumMoves = calculateMinimumMoves();
+    showSnackbar(
+      "Coups minimum restants : $minimumMoves",
+      context,
+      const Duration(milliseconds: 1000),
+    );
   }
 
   // Restart the game (after a win or on button press)
@@ -211,6 +220,14 @@ class PositionedTilesState extends State<Taquin> {
         );
       }
     }
+
+    //Copy the base image grid
+    baseImageGrid = GridView.count(
+        crossAxisSpacing: 5,
+        mainAxisSpacing: 5,
+        shrinkWrap: true,
+        crossAxisCount: gridSize,
+        children: tiles.map((tile) => tile.croppedImageTile()).toList());
   }
 
   // Add the "isAdjacent" attribute on the adjacent tiles to the empty one, whenever a move is made
@@ -256,6 +273,9 @@ class PositionedTilesState extends State<Taquin> {
           nbCoups++;
         }
 
+        // Calculate minimum moves remaining
+        int minimumMoves = calculateMinimumMoves();
+
         // Check for victory if the user is playing
         if (userAction && checkVictory()) {
           //Show confettis
@@ -289,6 +309,15 @@ class PositionedTilesState extends State<Taquin> {
           //Pause timer
           _stopwatch.stop();
           _timer.cancel();
+        }
+
+        if (userAction) {
+          // Show minimum moves remaining
+          showSnackbar(
+            "Coups minimum restants : $minimumMoves",
+            context,
+            const Duration(milliseconds: 1000),
+          );
         }
       });
     }
@@ -364,6 +393,23 @@ class PositionedTilesState extends State<Taquin> {
     );
   }
 
+  // TEST SOLVER
+  int calculateMinimumMoves() {
+    // The minimum number of moves remaining is the Manhattan distance
+    // between each tile's current position and its original position.
+    int totalMoves = 0;
+    for (int i = 0; i < tiles.length; i++) {
+      int currentRow = i ~/ gridSize;
+      int currentCol = i % gridSize;
+      int originalRow = tiles[i].originalPos[0];
+      int originalCol = tiles[i].originalPos[1];
+      int moves =
+          (currentRow - originalRow).abs() + (currentCol - originalCol).abs();
+      totalMoves += moves;
+    }
+    return totalMoves ~/ 2; // Each move swaps two tiles, so divide by 2
+  }
+
   // BUILD FUNCTION
 
   @override
@@ -386,14 +432,21 @@ class PositionedTilesState extends State<Taquin> {
                   //Create a grid for the tiles
                   Column(
                 children: [
-                  GridView.count(
-                    crossAxisSpacing: 5,
-                    mainAxisSpacing: 5,
-                    shrinkWrap: true,
-                    crossAxisCount: gridSize,
-                    children: tiles.asMap().entries.map((entry) {
-                      return createTileWidgetFrom(entry.value, entry.key);
-                    }).toList(),
+                  Offstage(
+                    offstage: showBaseImage,
+                    child: GridView.count(
+                      crossAxisSpacing: 5,
+                      mainAxisSpacing: 5,
+                      shrinkWrap: true,
+                      crossAxisCount: gridSize,
+                      children: tiles.asMap().entries.map((entry) {
+                        return createTileWidgetFrom(entry.value, entry.key);
+                      }).toList(),
+                    ),
+                  ),
+                  Offstage(
+                    offstage: !showBaseImage,
+                    child: baseImageGrid,
                   ),
                   ConfettiWidget(
                     confettiController: _confettisController,
@@ -496,109 +549,84 @@ class PositionedTilesState extends State<Taquin> {
       floatingActionButton: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          //Image gallery button
           Visibility(
             visible: !playing,
-            child: Container(
-              height: 50,
-              width: 50,
-              margin: const EdgeInsets.all(10),
-              child: IconButton(
-                icon: const Icon(Icons.photo),
-                onPressed: () {
-                  if (!kIsWeb) {
-                    selectImage(ImageSource.gallery);
-                  } else {
-                    showSnackbar(
-                        "L'import d'image ne marche que sur mobile", context);
-                  }
-                },
-                style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all<Color>(
-                      Theme.of(context).colorScheme.primary),
-                  iconColor: MaterialStateProperty.all<Color>(
-                      Theme.of(context).colorScheme.onPrimary),
-                ),
-              ),
+            //Undo Button
+            replacement: MyFloatingButton(
+              icon: Icons.undo,
+              onPressed: previousEmptyTileIndexes.isEmpty ? null : undoAction,
+              disabled: previousEmptyTileIndexes.isEmpty,
+              color: Colors.blue.shade600,
             ),
-          ),
-          //Undo button
-          Visibility(
-            visible: playing,
-            child: Container(
-              height: 50,
-              width: 50,
-              margin: const EdgeInsets.all(10),
-              child: IconButton(
-                icon: const Icon(Icons.undo),
-                onPressed: previousEmptyTileIndexes.isEmpty ? null : undoAction,
-                style: ButtonStyle(
-                  backgroundColor: previousEmptyTileIndexes.isEmpty
-                      ? MaterialStateProperty.all<Color>(Colors.grey)
-                      : MaterialStateProperty.all<Color>(
-                          Theme.of(context).colorScheme.primary),
-                  iconColor: MaterialStateProperty.all<Color>(
-                      Theme.of(context).colorScheme.onPrimary),
-                ),
-              ),
+            //Image gallery button
+            child: MyFloatingButton(
+              icon: Icons.camera,
+              onPressed: () {
+                if (!kIsWeb) {
+                  //Ask user to go to Gallery or Camera
+                  showCustomDialog(
+                    context,
+                    title: "Choix de la source",
+                    leftBtnText: "Gallerie",
+                    leftBtnPressed: () => selectImage(ImageSource.gallery),
+                    rightBtnText: "Caméra",
+                    rightBtnPressed: () => selectImage(ImageSource.camera),
+                  );
+                } else {
+                  showSnackbar(
+                      "L'import d'image ne marche que sur mobile", context);
+                }
+              },
+              color: Colors.blue.shade600,
             ),
           ),
           //Main btn (play or restart)
-          Container(
-            height: 50,
-            width: 50,
-            margin: const EdgeInsets.all(10),
-            child: IconButton(
-              icon: Icon(playing ? Icons.replay : Icons.play_arrow),
+          MyFloatingButton(
+            icon: playing ? Icons.replay : Icons.play_arrow,
+            onPressed: () {
+              setState(() {
+                //Toggle play state
+                playing = !playing;
+                //Do action
+                if (playing) {
+                  newGame();
+                  _stopwatch.reset();
+                  _stopwatch.start();
+                } else {
+                  restart();
+                  _stopwatch.stop();
+                }
+              });
+            },
+          ),
+          Visibility(
+            visible: playing,
+            //Base image toggle button
+            child: MyFloatingButton(
+              icon: showBaseImage ? Icons.visibility_off : Icons.visibility,
               onPressed: () {
                 setState(() {
-                  //Toggle play state
-                  playing = !playing;
-                  //Do action
-                  if (playing) {
-                    newGame();
-                    _stopwatch.reset();
-                    _stopwatch.start();
-                  } else {
-                    restart();
-                    _stopwatch.stop();
-                  }
+                  showBaseImage = !showBaseImage;
                 });
               },
-              style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all<Color>(
-                    Theme.of(context).colorScheme.primary),
-                iconColor: MaterialStateProperty.all<Color>(
-                    Theme.of(context).colorScheme.onPrimary),
-              ),
+              color: Colors.blue.shade600,
             ),
           ),
-          //Photo app button
           Visibility(
             visible: !playing,
-            child: Container(
-              height: 50,
-              width: 50,
-              margin: const EdgeInsets.all(10),
-              child: IconButton(
-                icon: const Icon(Icons.photo_camera),
-                onPressed: () {
-                  if (!kIsWeb) {
-                    selectImage(ImageSource.camera);
-                  } else {
-                    showSnackbar(
-                        "L'import d'image ne marche que sur mobile", context);
-                  }
-                },
-                style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all<Color>(
-                      Theme.of(context).colorScheme.primary),
-                  iconColor: MaterialStateProperty.all<Color>(
-                      Theme.of(context).colorScheme.onPrimary),
-                ),
-              ),
+            child: MyFloatingButton(
+              icon: Icons.language,
+              onPressed: () {
+                setState(() {
+                  //Reload image
+                  image = Image.network(
+                      "$networkImageUrl?random=${random.nextDouble()}");
+                  updateTiles();
+                });
+              },
+              color: Colors.blue.shade600,
             ),
-          ),
+          )
         ],
       ),
     );

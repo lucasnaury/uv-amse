@@ -21,11 +21,12 @@ After having selected the number of tiles and difficulty, you can start playing 
 ## Added functionalities (For Pr.Fabresse's eyes only)
 
 Here is a non exhaustive list of the non-required functionnalities we have created:
+- Choice of the difficulty
+- Choice of the image (gallery, camera, randomly from the web)
 - Stopwatch
 - Number of moves
 - Undo Button
+- Button to see the original grid image
 - Restart button
 - End-of-game pop up
 - Confettis at the end of the game
-- Choice of the difficulty
-- Choice of the image
